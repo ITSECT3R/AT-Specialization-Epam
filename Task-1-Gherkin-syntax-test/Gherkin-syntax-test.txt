@@ -1,0 +1,69 @@
+--- Tool Shop Demo Testing App. ---
+
+Feature: Test Login 
+
+  Scenario: User registration and login process
+    Given I am on the Practice Software Testing homepage
+    When I click on the "Sign in" link
+    And I register a new account with valid credentials
+    And I login with the newly created account credentials
+    Then I should be successfully logged in and see my account dashboard
+
+Feature: Profile
+
+  Scenario: Update user profile information
+    Given I am logged in to my account
+    When I navigate to my profile page
+    And I update my personal information with new valid data
+    And I save the changes
+    Then I should see a confirmation message that my profile has been updated
+
+Feature: products shop & cart testing
+
+  Scenario: View detailed product information
+    Given I am on the Practice Software Testing homepage
+    When I click on the Bolt Cutters from the product list
+    And I view the product details page
+    And I check the product specifications and images
+    Then I should see "$48.41" as product's price
+    And I should see "Aliquam viverra scelerisque tempus. Ut vehicula, ex sed elementum..." as description
+    And I should see Related Products including "combination pilers, pilers, etc."
+
+  Scenario: Add Thor Hammer to shopping cart
+    Given I am viewing the Thor Hammer details page
+    When I select the desired quantity to "1" for the product
+    And I click the "Add to Cart" button
+    And I navigate to the shopping cart page
+    Then I should see the Thor Hammer product in my cart with correct quantity of "1" and price "$11.14"
+
+  Scenario: Add product to favorites list
+    Given I am logged in and viewing the Long Nose Pilers product details page
+    When I click the "Add to Favorites" or star icon
+    And I navigate to my favorites page
+    And I verify the Long Nose Pliers product appears in my favorites list
+    Then I should see the Long Nose Pliers saved in my favorites for future reference
+
+Feature: search & filter
+
+  Scenario: Search for a specific product by name
+    Given I am on the Practice Software Testing homepage
+    When I enter "hammer" in the search box
+    And I click the search button or press Enter
+    And I review the search results
+    Then I should see products related to "hammer" displayed in the results
+
+  Scenario: Filter and sort products on the main page
+    Given I am on the Practice Software Testing homepage
+    When I select the specific category Hand Tools filter from the sidebar
+    And I choose a price range filter from  "20" - "45"
+    And I select a sorting option like "Price: High to Low"
+    Then I should see products filtered and sorted according to my selected criteria
+
+Feature: checkout
+
+  Scenario: Complete checkout process
+    Given I have Pilers products in my shopping cart
+    When I proceed to checkout
+    And I fill in my billing and shipping information
+    And I select a payment method
+    Then I should be able to complete the purchase and receive an order confirmation
