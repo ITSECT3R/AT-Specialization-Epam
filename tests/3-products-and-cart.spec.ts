@@ -1,11 +1,11 @@
 import { test, expect } from '@playwright/test';
-import { testUser, baseURL } from './test-config';
+import { testUser, baseURL, loginUser } from './test-config';
 
 test.describe('Products Shop & Cart Testing', () => {
   
   test('View detailed product information', async ({ page }) => {
     // Given I am on the Practice Software Testing homepage
-    await page.goto('https://practicesoftwaretesting.com/');
+    await page.goto(baseURL);
     await expect(page).toHaveTitle(/Practice Software Testing/);
     
     // When I click on the Bolt Cutters from the product list
@@ -33,8 +33,8 @@ test.describe('Products Shop & Cart Testing', () => {
 
   test('Add Thor Hammer to shopping cart', async ({ page }) => {
     // Given I am viewing the Thor Hammer details page
-    await page.goto('https://practicesoftwaretesting.com/');
-    await page.click('text=Thor Hammer');
+    await page.goto(baseURL);
+    await page.locator('[data-test="product-01K3H2RK6WB40Y68W1RJSBSW25"]').click();
     await expect(page).toHaveURL(/.*\/product\/.*/);
     await expect(page.locator('[data-test="product-name"]')).toContainText('Thor Hammer');
     
@@ -43,13 +43,15 @@ test.describe('Products Shop & Cart Testing', () => {
 
     // And I click the "Add to Cart" button
     await page.click('[data-test="add-to-cart"]');
-    // Wait for 5 seconds to allow the message to disappear
-    await page.waitForTimeout(5000);
-    
+
+    // Wait for the cart quantity to be visible
+    await page.waitForSelector('[data-test="nav-cart"]', { state: 'visible' });
+
     // Verify item was added (optional step)
     await expect(page.locator('[data-test="cart-quantity"]')).toContainText('1');
     
     // And I navigate to the shopping cart page
+    await page.waitForSelector('[data-test="nav-cart"]', { state: 'visible' });
     await page.click('[data-test="nav-cart"]');
     await expect(page).toHaveURL(/.*\/checkout/);
     
@@ -61,26 +63,12 @@ test.describe('Products Shop & Cart Testing', () => {
 
   test('Add product to favorites list', async ({ page }) => {
     // Given I am logged in and viewing the Long Nose Pilers product details page
-    await page.goto(baseURL);
-    
-    // Login first (prerequisite for favorites)
-    await page.click('[data-test="nav-sign-in"]');
-    await expect(page).toHaveURL(/.*\/login/);
-    
-    // Use existing account credentials from test-config
-    await page.fill('[data-test="email"]', testUser.email);
-    await page.fill('[data-test="password"]', testUser.password);
-    await page.click('[data-test="login-submit"]');
-
-    // Wait for navigation after login
-    await page.waitForNavigation();
-
-    // Verify login success
-    await expect(page.locator('#navbarSupportedContent')).toBeVisible();
+    await loginUser(page);
     
     // Navigate to Long Nose Pilers product
     await page.goto(baseURL);
-    await page.click('[data-test="product-01K35FZB5WHAVS118PXM593Z78"]');
+    await page.waitForLoadState('load');
+    await page.click('[data-test="product-01K3H2RK6KA7XGTGD52CY6GXBB"]');
     await expect(page).toHaveURL(/.*\/product\/.*/);
     await expect(page.locator('[data-test="product-name"]')).toContainText('Long Nose Pliers');
     
@@ -90,8 +78,5 @@ test.describe('Products Shop & Cart Testing', () => {
     // Then I should see visual feedback that the product was added to favorites
     // Since we're logged in, it should successfully add to favorites
     await expect(page.locator('div').filter({ hasText: 'Product added to your' }).nth(2)).toHaveText("Product added to your favorites list.");
-
-    // Or check for success message
-    // await expect(page.locator('[data-test="success-message"]')).toContainText(/added.*favorites|favorite.*added/i);
   });
 });

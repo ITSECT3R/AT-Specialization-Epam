@@ -2,7 +2,19 @@
   "name": "at-specializtion-epam",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "npx playwright test",
+    "test:headed": "npx playwright test --headed",
+    "test:debug": "npx playwright test --debug",
+    "test:login": "npx playwright test tests/1-login.spec.ts",
+    "test:profile": "npx playwright test tests/2-profile.spec.ts", 
+    "test:products": "npx playwright test tests/3-products-and-cart.spec.ts",
+    "test:search": "npx playwright test tests/4-search-and-filter.spec.ts",
+    "test:checkout": "npx playwright test tests/5-checkout.spec.ts",
+    "test:all": "npx playwright test tests/1-login.spec.ts tests/2-profile.spec.ts tests/3-products-and-cart.spec.ts tests/4-search-and-filter.spec.ts tests/5-checkout.spec.ts",
+    "show-report": "npx playwright show-report",
+    "install-browsers": "npx playwright install"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ITSECT3R/AT-Specializtion-Epam.git"
