@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { testUser, baseURL, loginUser } from './test-config';
+import { loginUser } from './utils/test-config';
 
 test.describe('Profile', () => {
   test('Update user profile information', async ({ page }) => {
@@ -13,7 +13,7 @@ test.describe('Profile', () => {
     
     // And I update my personal information with new valid data
     const updatedFirstName = 'Christopher';
-    const updatedLastName = 'Hopkins-Updated';
+    const updatedLastName = 'Hopkins';
     const updatedPhone = '9876543210';
     
     await page.fill('[data-test="first-name"]', updatedFirstName);

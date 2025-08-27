@@ -1,0 +1,9 @@
+{
+  "ts-node": {
+    "esm": false,
+    "compilerOptions": {
+      "module": "commonjs",
+      "target": "es2020"
+    }
+  }
+}

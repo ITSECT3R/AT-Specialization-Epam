@@ -1,13 +1,6 @@
 import { test, expect } from '@playwright/test';
-import { baseURL, loginUser } from './test-config';
-import { 
-  selectAllCategoryCheckboxes, 
-  setPriceRangeSlider, 
-  applySorting, 
-  waitForSortingComplete,
-  verifyProductsVisible,
-  applyFiltersAndSort 
-} from './filter-utils';
+import { baseURL, loginUser } from './utils/test-config';
+import { applyFiltersAndSort } from './utils/filter-utils';
 
 test.describe('Search & Filter', () => {
   

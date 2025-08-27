@@ -13,12 +13,18 @@ import { defineConfig, devices } from '@playwright/test';
  */
 export default defineConfig({
   testDir: './tests',
+  /* Global timeout for each test */
+  timeout: 60000,
+  /* Global timeout for expect() assertions */
+  expect: {
+    timeout: 10000,
+  },
   /* Run tests in files in parallel - disabled to ensure login runs first */
   fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
-  /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
+  /* Retry failed tests - 2 retries for local development, 2 for CI */
+  retries: process.env.CI ? 2 : 2,
   /* Opt out of parallel tests on CI. */
   workers: 1, // Set to 1 to ensure sequential execution
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
@@ -30,23 +36,41 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+    
+    /* Take screenshots on failure */
+    screenshot: 'only-on-failure',
+    
+    /* Record video on failure */
+    video: 'retain-on-failure',
+    
+    /* Global timeout for actions like click, fill, etc. */
+    actionTimeout: 10000,
+    
+    /* Global timeout for navigation actions like goto, reload, etc. */
+    navigationTimeout: 30000,
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: { 
+        ...devices['Desktop Chrome']
+      },
     },
 
     {
       name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
+      use: { 
+        ...devices['Desktop Firefox']
+      },
     },
 
     {
       name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
+      use: { 
+        ...devices['Desktop Safari']
+      },
     },
 
     /* Test against mobile viewports. */

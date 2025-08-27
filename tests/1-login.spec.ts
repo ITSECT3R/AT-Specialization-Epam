@@ -1,42 +1,35 @@
 import { test, expect } from '@playwright/test';
-import { testUser, baseURL } from './test-config';
+import { getTestUser, baseURL } from './utils/test-config';
+import { registerUser, attemptLogin } from './utils/register';
 
 test.describe('Test Login', () => {
   test('User registration and login process', async ({ page }) => {
+    // Get unique user for this test session
+    const testUser = getTestUser('login-test-session');
+    console.log(`🧪 Testing registration and login for user: ${testUser.email}`);
+    
     // Given I am on the Practice Software Testing homepage
     await page.goto(baseURL);
     await expect(page).toHaveTitle(/Practice Software Testing/);
-    // When I click on the "Sign in" link
-    await page.click('[data-test="nav-sign-in"]');
-    await expect(page).toHaveURL(/.*\/login/);
     
-    // And I register a new account with valid credentials
-    await page.click('[data-test="register-link"]');
-    await expect(page).toHaveURL(/.*\/register/);
-
-    await page.fill('[data-test="first-name"]', testUser.firstName);
-    await page.fill('[data-test="last-name"]', testUser.lastName);
-    await page.fill('[data-test="dob"]', testUser.dob);
-    await page.fill('[data-test="street"]', testUser.street);
-    await page.fill('[data-test="postal_code"]', testUser.postalCode);
-    await page.fill('[data-test="city"]', testUser.city);
-    await page.fill('[data-test="state"]', testUser.state);
-    await page.selectOption('[data-test="country"]', { label: testUser.country });
-    await page.fill('[data-test="phone"]', testUser.phone);
-    await page.fill('[data-test="email"]', testUser.email);
-    await page.fill('[data-test="password"]', testUser.password);
-    await page.click('[data-test="register-submit"]');
+    // When I use the registration utility to register the user
+    const registrationResult = await registerUser(page, testUser);
     
-    // Wait for registration to complete and navigate to login page
-    await expect(page).toHaveURL(/.*\/login/);
+    if (!registrationResult.success) {
+      throw new Error(`Registration failed: ${registrationResult.error}`);
+    }
     
-    // And I login with the newly created account credentials
-    await page.fill('[data-test="email"]', testUser.email);
-    await page.fill('[data-test="password"]', testUser.password);
-    await page.click('[data-test="login-submit"]');
+    // Then I should be able to login with the newly created account
+    const loginSuccess = await attemptLogin(page, testUser);
     
-    // Then I should be successfully logged in and see my account dashboard
+    if (!loginSuccess) {
+      throw new Error(`Login failed after successful registration for user: ${testUser.email}`);
+    }
+    
+    // And I should see my account dashboard with correct user information
     await expect(page).toHaveURL(/.*\/account/);
     await expect(page.locator('[data-test="nav-menu"]')).toContainText(`${testUser.firstName} ${testUser.lastName}`);
+    
+    console.log(`✅ Registration and login test completed successfully for user: ${testUser.email}`);
   });
 });

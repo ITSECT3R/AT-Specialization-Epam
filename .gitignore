@@ -1,9 +1,56 @@
 
-# Playwright
+# Dependencies
 node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Test Results & Reports
 /test-results/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+coverage/
+mochawesome-report/
+.nyc_output/
+*.log
 
-current-steps.md
+# Environment Variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE & Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS Generated Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Build Output
+dist/
+build/
+*.tsbuildinfo
+
+# Cache
+.npm
+.cache/
+
+# Temporary Files
+tmp/
+temp/
+*.tmp
+
+# Mocha/Test Output specific
+mocha-test-results.json

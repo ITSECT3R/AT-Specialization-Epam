@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { testUser, baseURL, loginUser } from './test-config';
+import { baseURL, loginUser } from './utils/test-config';
 
 test.describe('Checkout', () => {
   test('Complete checkout process', async ({ page }) => {
