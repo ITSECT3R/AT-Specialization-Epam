@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { loginUser } from './utils/test-config';
+import { loginUser } from './utils/login';
 import { applyFiltersAndSort } from './utils/filter-utils';
 
 test.describe('Search & Filter', () => {

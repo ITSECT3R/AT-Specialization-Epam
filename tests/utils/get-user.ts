@@ -1,3 +1,6 @@
+// Store unique users per browser session using a Map
+const browserUsers = new Map<string, Record<string, string>>();
+
 // Dynamic user data generation for browser isolation
 const generateUniqueEmail = (): string => {
   const timestamp = Date.now();
@@ -5,9 +8,6 @@ const generateUniqueEmail = (): string => {
   // Use a combination of timestamp and random for uniqueness
   return `test.user.${timestamp}.${randomSuffix}@example.com`;
 };
-
-// Store unique users per browser session using a Map
-const browserUsers = new Map<string, Record<string, string>>();
 
 export const getTestUser = (browserContext?: string): Record<string, string> => {
   // Create a unique key for this test session
@@ -42,12 +42,3 @@ export const getTestUser = (browserContext?: string): Record<string, string> => 
   console.log(`🧪 Generated test user for session ${sessionKey}: ${newUser.email}`);
   return newUser;
 };
-
-// Reusable login function with registration fallback
-export async function loginUser(page: any) {
-  // Import the registration utilities
-  const { ensureUserLoggedIn } = await import('./register/register');
-  
-  // Use the smart login function that handles registration fallback
-  return await ensureUserLoggedIn(page, 'login-test-session');
-}
