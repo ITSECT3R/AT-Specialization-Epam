@@ -1,5 +1,5 @@
 import { Page, expect } from '@playwright/test';
-import { getTestUser, baseURL } from './test-config';
+import { getTestUser } from '../test-config';
 
 /**
  * Registration utility for handling user registration with fallback logic
@@ -24,7 +24,7 @@ export async function registerUser(page: Page, user: any): Promise<RegistrationR
     console.log(`🔄 Starting registration for user: ${user.email}`);
     
     // Navigate to registration page
-    await page.goto(baseURL + '/auth/register');
+    await page.goto('/auth/register');
     await page.waitForLoadState('load');
     
     // Fill registration form using the exact locators from your working test
@@ -75,7 +75,7 @@ export async function attemptLogin(page: Page, user: any): Promise<boolean> {
     
     // Navigate to login page if not already there
     if (!page.url().includes('/login')) {
-      await page.goto(baseURL + '/auth/login');
+      await page.goto('/auth/login');
       await page.waitForLoadState('load');
     }
     

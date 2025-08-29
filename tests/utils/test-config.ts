@@ -43,13 +43,10 @@ export const getTestUser = (browserContext?: string): Record<string, string> => 
   return newUser;
 };
 
-// Base URL for the application
-export const baseURL = 'https://practicesoftwaretesting.com/';
-
 // Reusable login function with registration fallback
 export async function loginUser(page: any) {
   // Import the registration utilities
-  const { ensureUserLoggedIn } = await import('./register');
+  const { ensureUserLoggedIn } = await import('./register/register');
   
   // Use the smart login function that handles registration fallback
   return await ensureUserLoggedIn(page, 'login-test-session');

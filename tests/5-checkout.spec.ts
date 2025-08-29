@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { baseURL, loginUser } from './utils/test-config';
+import { loginUser } from './utils/test-config';
 
 test.describe('Checkout', () => {
   test('Complete checkout process', async ({ page }) => {
@@ -8,7 +8,7 @@ test.describe('Checkout', () => {
     await loginUser(page);
 
     // Navigate to Combination Pliers product
-    await page.goto(baseURL);
+    await page.goto('/');
     await page.click('text=Combination Pliers');
     await expect(page).toHaveURL(/.*\/product\/.*/);
     await expect(page.locator('[data-test="product-name"]')).toContainText('Combination Pliers');

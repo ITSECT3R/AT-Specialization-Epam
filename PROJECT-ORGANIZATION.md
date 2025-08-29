@@ -38,8 +38,9 @@ This document outlines the organizational standards and conventions used in this
 
 **Purpose**: Project tracking and requirements documentation
 
-- `current-steps.md` - Progress tracking
-- `mocha-integration-module5.md` - Module 5 requirements
+- `1.-Gherkin-syntax-test.md` - Module 3 Writing test with Gherkin syntax
+- `2.-Playwright-test-creation.md` - Module 4 Creating playwright tests
+- `3.-Mocha&Chai-integration-module5.md` - Module 5 requirements
 
 ## 🏷️ Naming Conventions
 
@@ -133,25 +134,3 @@ describe("Feature Area - Assertion Style", () => {
 - Meaningful error messages
 - Appropriate timeouts
 - Graceful cleanup in hooks
-
-## 📊 Documentation Standards
-
-### README.md
-
-- Project overview and setup instructions
-- Clear script documentation
-- Feature descriptions and status
-
-### Code Comments
-
-- JSDoc format for functions
-- Inline comments for complex logic
-- TODO/FIXME tags for future improvements
-
-### Commit Messages
-
-- **Format**: `type: description`
-- **Types**: feat, fix, docs, test, refactor, style
-- **Description**: Clear, concise action description
-
-This organization ensures maintainability, scalability, and clear understanding of the project structure for all contributors.

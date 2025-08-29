@@ -28,7 +28,6 @@ This document explains all the npm scripts available in this project and their p
 - **`npm run test:products`** - Product browsing and cart operation tests
 - **`npm run test:search`** - Search and filtering functionality tests
 - **`npm run test:checkout`** - Complete checkout process tests
-- **`npm run test:sequential`** - Run all Playwright tests in dependency order
 
 ## 📊 Reporting & Maintenance
 

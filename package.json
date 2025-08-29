@@ -16,19 +16,22 @@
   "license": "ISC",
   "scripts": {
     "test": "npm run test:mocha",
-    "test:all": "npm run test:mocha && npm run test:playwright",
     "test:mocha": "mocha --require ts-node/register 'tests-mocha/**/*.spec.ts'",
     "test:mocha:watch": "npm run test:mocha -- --watch",
+    
+    "test:all": "npm run test:mocha && npm run test:playwright",
+    
     "test:playwright": "npx playwright test",
     "test:playwright:headed": "npx playwright test --headed",
     "test:playwright:debug": "npx playwright test --debug",
     "test:playwright:ui": "npx playwright test --ui",
+
     "test:login": "npx playwright test tests/1-login.spec.ts",
     "test:profile": "npx playwright test tests/2-profile.spec.ts",
     "test:products": "npx playwright test tests/3-products-and-cart.spec.ts",
     "test:search": "npx playwright test tests/4-search-and-filter.spec.ts",
     "test:checkout": "npx playwright test tests/5-checkout.spec.ts",
-    "test:sequential": "npx playwright test tests/1-login.spec.ts tests/2-profile.spec.ts tests/3-products-and-cart.spec.ts tests/4-search-and-filter.spec.ts tests/5-checkout.spec.ts",
+
     "show-report": "npx playwright show-report",
     "install-browsers": "npx playwright install",
     "clean": "rm -rf test-results playwright-report coverage",

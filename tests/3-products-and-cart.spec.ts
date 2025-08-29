@@ -1,11 +1,11 @@
 import { test, expect } from '@playwright/test';
-import { baseURL, loginUser } from './utils/test-config';
+import { loginUser } from './utils/test-config';
 
 test.describe('Products Shop & Cart Testing', () => {
   
   test('View detailed product information', async ({ page }) => {
     // Given I am on the Practice Software Testing homepage
-    await page.goto(baseURL);
+    await page.goto('/');
     await expect(page).toHaveTitle(/Practice Software Testing/);
     
     // When I click on the Bolt Cutters from the product list
@@ -33,7 +33,7 @@ test.describe('Products Shop & Cart Testing', () => {
 
   test('Add Thor Hammer to shopping cart', async ({ page }) => {
     // Given I am viewing the Thor Hammer details page
-    await page.goto(baseURL);
+    await page.goto('/');
     await page.click('text=Thor Hammer $11.14');
     await expect(page).toHaveURL(/.*\/product\/.*/);
     await expect(page.locator('[data-test="product-name"]')).toContainText('Thor Hammer');
@@ -66,7 +66,7 @@ test.describe('Products Shop & Cart Testing', () => {
     await loginUser(page);
     
     // Navigate to Long Nose Pilers product
-    await page.goto(baseURL);
+    await page.goto('/');
     await page.waitForLoadState('load');
     await page.getByRole('link', { name: 'Long Nose Pliers Long Nose Pliers Out of stock $14.24' }).click();
     await expect(page).toHaveURL(/.*\/product\/.*/);

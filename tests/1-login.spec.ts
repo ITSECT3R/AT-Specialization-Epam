@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
-import { getTestUser, baseURL } from './utils/test-config';
-import { registerUser, attemptLogin } from './utils/register';
+import { getTestUser } from './utils/test-config';
+import { registerUser, attemptLogin } from './utils/register/register';
 
 test.describe('Test Login', () => {
   test('User registration and login process', async ({ page }) => {
@@ -9,7 +9,7 @@ test.describe('Test Login', () => {
     console.log(`🧪 Testing registration and login for user: ${testUser.email}`);
     
     // Given I am on the Practice Software Testing homepage
-    await page.goto(baseURL);
+    await page.goto('/');
     await expect(page).toHaveTitle(/Practice Software Testing/);
     
     // When I use the registration utility to register the user

@@ -1,12 +1,12 @@
 import { test, expect } from '@playwright/test';
-import { baseURL, loginUser } from './utils/test-config';
+import { loginUser } from './utils/test-config';
 import { applyFiltersAndSort } from './utils/filter-utils';
 
 test.describe('Search & Filter', () => {
   
   test('Search for a specific product by name', async ({ page }) => {
     // Given I am on the Practice Software Testing homepage
-    await page.goto(baseURL);
+    await page.goto('/');
     await expect(page).toHaveTitle(/Practice Software Testing/);
     
     // When I enter "hammer" in the search box
@@ -32,14 +32,15 @@ test.describe('Search & Filter', () => {
   test('Filter and sort products on the main page', async ({ page }) => {
     await loginUser(page);
     // Given I am on the Practice Software Testing homepage
-    await page.goto(baseURL);
+    await page.goto('/');
     await expect(page).toHaveTitle(/Practice Software Testing/);
     
     // When I apply filters and sorting using reusable utility functions
     const expectedProducts = [
-      'Bolt Cutters',
-      'Claw Hammer with Fiberglass Handle', 
-      'Adjustable Wrench'
+      'Open-end Spanners (Set)',
+      'Swiss Woodcarving Chisels', 
+      'Adjustable Wrench',
+      'Claw Hammer with Fiberglass Handle'
     ];
     
     await applyFiltersAndSort(
@@ -53,11 +54,15 @@ test.describe('Search & Filter', () => {
 
     // Additional verification: Check that Bolt Cutters appears before Adjustable Wrench
     // (Price High to Low sorting: $48.41 > $20.33)
-    const boltCuttersElement = page.locator('h5:has-text("Bolt Cutters")');
+    const openEndSpannersElement = page.locator('h5:has-text("Open-end Spanners (Set)")');
+    const swissWoodcarvingChiselsElement = page.locator('h5:has-text("Swiss Woodcarving Chisels")');
     const adjustableWrenchElement = page.locator('h5:has-text("Adjustable Wrench")');
+    const clawHammerElement = page.locator('h5:has-text("Claw Hammer with Fiberglass Handle")');
 
     // Both should be visible
-    await expect(boltCuttersElement).toBeVisible();
+    await expect(openEndSpannersElement).toBeVisible();
+    await expect(swissWoodcarvingChiselsElement).toBeVisible();
     await expect(adjustableWrenchElement).toBeVisible();
+    await expect(clawHammerElement).toBeVisible();
   });
 });

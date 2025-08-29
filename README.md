@@ -1,6 +1,6 @@
 # EPAM AT Specialization - Test Automation Framework
 
-A comprehensive test automation framework combining **Playwright** for E2E testing and **Mocha + Chai** for unit/integration testing, built with TypeScript.
+A comprehensive test automation framework combining **Playwright** for E2E testing. **Mocha + Chai** for learning purposes and replicating Playwright tests.
 
 ## 🏗️ Project Structure
 
@@ -80,68 +80,9 @@ Unit and integration tests demonstrating all three Chai assertion interfaces.
 - **Should Interface** - Expressive BDD style (coming soon)
 - **Expect Interface** - Natural language assertions (coming soon)
 
-## 📋 Available Scripts
+## 📊 Reports & Maintenance 🎯 Test Scenarios Covered
 
-### 🏃‍♂️ Test Execution
-
-```bash
-# Run all Mocha tests (default)
-npm test
-
-# Run both Mocha and Playwright tests
-npm run test:all
-
-# Mocha + Chai tests only
-npm run test:mocha
-npm run test:mocha:watch    # Watch mode
-
-# Playwright tests only
-npm run test:playwright
-npm run test:playwright:headed    # With browser UI
-npm run test:playwright:debug     # Debug mode
-npm run test:playwright:ui        # Playwright UI mode
-```
-
-### 🎯 Individual Test Execution
-
-```bash
-# Individual Playwright tests
-npm run test:login          # User registration & login
-npm run test:profile        # Profile management
-npm run test:products       # Products & cart operations
-npm run test:search         # Search & filtering
-npm run test:checkout       # Checkout process
-npm run test:sequential     # All tests in dependency order
-```
-
-### 📊 Reports & Maintenance
-
-```bash
-# View Playwright test reports
-npm run show-report
-
-# Clean up test artifacts
-npm run clean
-
-# Install/update Playwright browsers
-npm run install-browsers
-```
-
-## 🎯 Test Scenarios Covered
-
-### E2E Testing (Playwright)
-
-- **User Authentication**: Registration, login, session management
-- **Profile Management**: User profile updates, form validation
-- **Product Operations**: Browsing, detailed views, cart management, favorites
-- **Search & Filter**: Product search, category filtering, price ranges, sorting
-- **Checkout Process**: Complete purchase workflow, payment selection, order confirmation
-
-### Unit/Integration Testing (Mocha + Chai)
-
-- **Assert Interface**: Classical assertion demonstrations
-- **Should Interface**: Expressive BDD assertions (planned)
-- **Expect Interface**: Natural language assertions (planned)
+### check the SCRIPTS.md file for info on reports and test scripts :D
 
 ## 🛠️ Configuration Files
 
@@ -166,6 +107,12 @@ npm run install-browsers
 
 ## 🏆 Learning Objectives
 
+### Module 3 Achievements
+
+- ✅ Created Test with Gherkin Syntax
+- ✅ BDD test implementation following Gherkin scenarios
+- ✅ 8 Test written covering multiple features
+
 ### Module 4 Achievements
 
 - ✅ Playwright test framework setup and configuration
@@ -177,7 +124,7 @@ npm run install-browsers
 ### Module 5 Goals
 
 - 🔄 Mocha + Chai integration and setup
-- 🔄 Implementation of all three Chai assertion interfaces
+- 🔄 Implementation of all test with Chai assertion interfaces and mocha as test runner
 - 🔄 Understanding differences between assertion styles
 - 🔄 Best practices for different testing scenarios
 
