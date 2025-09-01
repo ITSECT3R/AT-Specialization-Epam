@@ -1,4 +1,5 @@
-import { test, expect } from '@playwright/test';
+import { test } from '@playwright/test';
+import { expect } from 'chai';
 import { loginUser } from './utils/login';
 
 test.describe('Profile', () => {
@@ -9,8 +10,9 @@ test.describe('Profile', () => {
     // When I navigate to my profile page
     await page.click('[data-test="nav-menu"]');
     await page.click('[data-test="nav-my-profile"]');
-    await expect(page).toHaveURL(/.*\/profile/);
-    
+    await page.waitForURL(/.*\/profile/);
+    expect(page.url()).to.match(/.*\/profile/);
+
     // And I update my personal information with new valid data
     const updatedFirstName = 'Christopher';
     const updatedLastName = 'Hopkins';
@@ -25,8 +27,12 @@ test.describe('Profile', () => {
     await page.click('[data-test="update-profile-submit"]'); // this click does not work :(
 
     // Additional verification: Check if the updated data persists
-    await expect(page.locator('[data-test="first-name"]')).toHaveValue(updatedFirstName);
-    await expect(page.locator('[data-test="last-name"]')).toHaveValue(updatedLastName);
-    await expect(page.locator('[data-test="phone"]')).toHaveValue(updatedPhone);
+    const firstNameValue = await page.locator('[data-test="first-name"]').inputValue();
+    const lastNameValue = await page.locator('[data-test="last-name"]').inputValue();
+    const phoneValue = await page.locator('[data-test="phone"]').inputValue();
+    
+    expect(firstNameValue).to.equal(updatedFirstName);
+    expect(lastNameValue).to.equal(updatedLastName);
+    expect(phoneValue).to.equal(updatedPhone);
   });
 });

@@ -1,4 +1,5 @@
-import { test, expect } from '@playwright/test';
+import { test } from '@playwright/test';
+import { expect } from 'chai';
 import { loginUser } from './utils/login';
 
 test.describe('Checkout', () => {
@@ -10,30 +11,40 @@ test.describe('Checkout', () => {
     // Navigate to Combination Pliers product
     await page.goto('/');
     await page.click('text=Combination Pliers');
-    await expect(page).toHaveURL(/.*\/product\/.*/);
-    await expect(page.locator('[data-test="product-name"]')).toContainText('Combination Pliers');
+    await page.waitForURL(/.*\/product\/.*/);
+    const productUrl = page.url();
+    expect(productUrl).to.match(/.*\/product\/.*/);
+    
+    const productName = await page.locator('[data-test="product-name"]').textContent();
+    expect(productName).to.include('Combination Pliers');
     
     // Add Pliers to cart
     await page.click('[data-test="add-to-cart"]');
     await page.locator('[data-test="nav-cart"]').waitFor({ state: 'visible' });
 
     // Verify item was added to cart
-    await expect(page.locator('[data-test="cart-quantity"]')).toContainText('1');
+    const cartQuantityText = await page.locator('[data-test="cart-quantity"]').textContent();
+    expect(cartQuantityText).to.include('1');
     
     // When I proceed to checkout
     await page.click('[data-test="nav-cart"]');
-    await expect(page).toHaveURL(/.*\/checkout/);
-    
+    await page.waitForURL(/.*\/checkout/);
+    expect(page.url()).to.match(/.*\/checkout/);
+
     // Verify Pliers product is in cart
-    await expect(page.getByRole('cell', { name: 'Combination Pliers', exact: true })).toBeVisible();
+    const pliersCell = page.getByRole('cell', { name: 'Combination Pliers', exact: true });
+    await pliersCell.waitFor({ state: 'visible' });
+    const isPliersVisible = await pliersCell.isVisible();
+    expect(isPliersVisible).to.be.true;
     
     // Proceed to checkout step 1 (Sign in - already done)
     await page.click('[data-test="proceed-1"]');
     
     // Proceed to checkout step 2 (Address)
     await page.click('[data-test="proceed-2"]');
-    await expect(page).toHaveURL(/.*\/checkout/);
-    
+    await page.waitForURL(/.*\/checkout/);
+    expect(page.url()).to.match(/.*\/checkout/);
+
     // And I fill in my billing and shipping information
     await page.fill('[data-test="street"]', '123 Test Street');
     await page.fill('[data-test="city"]', 'Test City');
@@ -43,8 +54,9 @@ test.describe('Checkout', () => {
     
     // Proceed to checkout step 3 (Payment)
     await page.click('[data-test="proceed-3"]');
-    await expect(page).toHaveURL(/.*\/checkout/);
-    
+    await page.waitForURL(/.*\/checkout/);
+    expect(page.url()).to.match(/.*\/checkout/);
+
     // And I select a payment method
     
     // Select Bank Transfer payment method
@@ -54,6 +66,10 @@ test.describe('Checkout', () => {
     await page.locator('[data-test="account_name"]').fill('Christofer Hopkins');
     await page.locator('[data-test="account_number"]').fill('123456789');
     await page.locator('[data-test="finish"]').click();
-    await expect(page.locator('div').filter({ hasText: /^Payment was successful$/ }).first()).toBeVisible();
+    
+    const paymentSuccessMessage = page.locator('div').filter({ hasText: /^Payment was successful$/ }).first();
+    await paymentSuccessMessage.waitFor({ state: 'visible' });
+    const isPaymentSuccessVisible = await paymentSuccessMessage.isVisible();
+    expect(isPaymentSuccessVisible).to.be.true;
   });
 });

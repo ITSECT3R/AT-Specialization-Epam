@@ -1,30 +1,28 @@
 # EPAM AT Specialization - Test Automation Framework
 
-A comprehensive test automation framework combining **Playwright** for E2E testing. **Mocha + Chai** for learning purposes and replicating Playwright tests.
+A comprehensive test automation framework using **Playwright** for browser automation with **Chai** assertions for enhanced readability and expressiveness.
 
 ## 🏗️ Project Structure
 
 ```
 AT-Specializtion-Epam/
-├── 📁 tests/                          # Playwright BDD Tests (Module 4)
+├── 📁 tests/                          # Playwright + Chai Tests
 │   ├── 1-login.spec.ts                 # User authentication tests
 │   ├── 2-profile.spec.ts               # User profile management
 │   ├── 3-products-and-cart.spec.ts     # Product browsing & cart operations
 │   ├── 4-search-and-filter.spec.ts     # Search & filtering functionality
 │   ├── 5-checkout.spec.ts              # Complete checkout process
-│   ├── test-config.ts                  # Shared configuration & utilities
-│   └── filter-utils.ts                 # Reusable filter functions
-├── 📁 tests-mocha/                     # Mocha + Chai Tests (Module 5)
-│   ├── 1-login-assert.spec.ts          # Tests using Chai Assert interface
-│   ├── test-config.ts                  # Mocha test configuration
-│   └── [future test files]             # Should & Expect interface tests
+│   └── utils/                          # Shared utilities
+│       ├── get-user.ts                 # User data generation
+│       ├── login.ts                    # Login utilities
+│       ├── register.ts                 # Registration utilities
+│       ├── filter-utils.ts             # Reusable filter functions
+│       └── test-config.ts              # Shared configuration
 ├── 📁 roadmap-tests/                   # Project documentation
-│   ├── current-steps.md                # Current progress tracking
-│   └── mocha-integration-module5.md    # Module 5 requirements
+│   └── current-steps.md                # Current progress tracking
 ├── 📁 playwright-report/               # Playwright test reports
 ├── 📁 test-results/                    # Test execution results
 ├── playwright.config.ts               # Playwright configuration
-├── .mocharc.json                      # Mocha configuration
 ├── tsconfig.json                      # TypeScript configuration
 └── package.json                       # Project dependencies & scripts
 ```
@@ -56,29 +54,22 @@ AT-Specializtion-Epam/
    npm run install-browsers
    ```
 
-## 🧪 Testing Frameworks
+## 🧪 Testing Framework
 
-### 🎭 Playwright Tests (Module 4)
+### 🎭 Playwright + Chai Tests
 
-End-to-end tests for the [Practice Software Testing](https://practicesoftwaretesting.com/) application using BDD methodology.
+End-to-end tests for the [Practice Software Testing](https://practicesoftwaretesting.com/) application using Playwright for browser automation and Chai for assertions.
 
 **Features:**
 
+- ✅ Playwright for robust browser automation
+- ✅ Chai assertions for readable and expressive test validation
 - ✅ Sequential test execution (login test runs first)
 - ✅ Reusable utilities and configurations
 - ✅ Comprehensive BDD scenarios following Gherkin syntax
 - ✅ Advanced filtering and search functionality
 - ✅ Complete e-commerce workflow testing
-
-### ☕ Mocha + Chai Tests (Module 5)
-
-Unit and integration tests demonstrating all three Chai assertion interfaces.
-
-**Assertion Interfaces:**
-
-- **Assert Interface** - Classical assertion style
-- **Should Interface** - Expressive BDD style (coming soon)
-- **Expect Interface** - Natural language assertions (coming soon)
+- ✅ Separation of concerns: Playwright for automation, Chai for assertions
 
 ## 📊 Reports & Maintenance 🎯 Test Scenarios Covered
 
@@ -92,17 +83,12 @@ Unit and integration tests demonstrating all three Chai assertion interfaces.
 - Cross-browser testing support
 - Report generation settings
 - Timeout and retry configurations
-
-### Mocha Configuration (`.mocharc.json`)
-
-- TypeScript support via ts-node
-- Test file patterns and timeouts
-- Reporter settings
+- Base URL configuration for easy navigation
 
 ### TypeScript Configuration (`tsconfig.json`)
 
 - Modern ES target settings
-- Type definitions for testing frameworks
+- Type definitions for Playwright and Chai
 - Module resolution configuration
 
 ## 🏆 Learning Objectives
@@ -111,7 +97,7 @@ Unit and integration tests demonstrating all three Chai assertion interfaces.
 
 - ✅ Created Test with Gherkin Syntax
 - ✅ BDD test implementation following Gherkin scenarios
-- ✅ 8 Test written covering multiple features
+- ✅ 8 Tests written covering multiple features
 
 ### Module 4 Achievements
 
@@ -121,12 +107,13 @@ Unit and integration tests demonstrating all three Chai assertion interfaces.
 - ✅ Reusable utility functions and shared configurations
 - ✅ Advanced locator strategies and wait patterns
 
-### Module 5 Goals
+### Module 5 Achievements
 
-- 🔄 Mocha + Chai integration and setup
-- 🔄 Implementation of all test with Chai assertion interfaces and mocha as test runner
-- 🔄 Understanding differences between assertion styles
-- 🔄 Best practices for different testing scenarios
+- ✅ Playwright + Chai integration and setup
+- ✅ Implementation of all tests with Chai assertion library
+- ✅ Separation of browser automation (Playwright) and assertions (Chai)
+- ✅ Enhanced test readability and expressiveness
+- ✅ Consistent assertion patterns across all test files
 
 ## 🌐 Application Under Test
 
@@ -152,12 +139,11 @@ This project is part of the EPAM AT Specialization program. For questions or imp
 ## 📚 Resources
 
 - [Playwright Documentation](https://playwright.dev/)
-- [Mocha Testing Framework](https://mochajs.org/)
 - [Chai Assertion Library](https://www.chaijs.com/)
 - [TypeScript Handbook](https://www.typescriptlang.org/docs/)
 
 ---
 
-**Project Status**: 🔄 Active Development  
-**Current Branch**: `mocha-integration-module5`  
-**Last Updated**: August 2025
+**Project Status**: ✅ Complete  
+**Current Branch**: `playwright-chai-integration`  
+**Last Updated**: September 2025

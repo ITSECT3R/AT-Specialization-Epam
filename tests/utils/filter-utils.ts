@@ -1,5 +1,5 @@
-import { Page, expect } from '@playwright/test';
-
+import { Page } from '@playwright/test';
+import { expect } from 'chai';
 /**
  * Filter utility functions for e-commerce product filtering
  * These functions provide reusable logic for common filtering operations
@@ -21,7 +21,9 @@ export async function selectAllCategoryCheckboxes(page: Page, categoryText: stri
     if (!(await checkbox.isChecked())) {
       await checkbox.check();
     }
-    await expect(checkbox).toBeChecked();
+    // Verify checkbox is checked using Chai
+    const isChecked = await checkbox.isChecked();
+    expect(isChecked).to.be.true;
   }
 }
 
@@ -37,8 +39,14 @@ export async function setPriceRangeSlider(page: Page, minPrice: number, maxPrice
   const maxSlider = page.locator('.ngx-slider-pointer-max');
   
   // Wait for sliders to be visible
-  await expect(minSlider).toBeVisible();
-  await expect(maxSlider).toBeVisible();
+  await minSlider.waitFor({ state: 'visible' });
+  await maxSlider.waitFor({ state: 'visible' });
+  
+  // Verify sliders are visible using Chai
+  const minSliderVisible = await minSlider.isVisible();
+  const maxSliderVisible = await maxSlider.isVisible();
+  expect(minSliderVisible).to.be.true;
+  expect(maxSliderVisible).to.be.true;
   
   // Set minimum price (assuming slider starts at 0)
   if (minPrice > 0) {
@@ -78,7 +86,12 @@ export async function applySorting(page: Page, sortOption: string): Promise<void
  * @param timeout - Optional timeout in milliseconds (default: 10000)
  */
 export async function waitForSortingComplete(page: Page, firstProductName: string, timeout: number = 10000): Promise<void> {
-  await expect(page.locator(`h5:has-text("${firstProductName}")`)).toBeVisible({ timeout });
+  const productLocator = page.locator(`h5:has-text("${firstProductName}")`);
+  await productLocator.waitFor({ state: 'visible', timeout });
+  
+  // Verify product is visible using Chai
+  const isVisible = await productLocator.isVisible();
+  expect(isVisible).to.be.true;
 }
 
 /**
@@ -89,7 +102,12 @@ export async function waitForSortingComplete(page: Page, firstProductName: strin
  */
 export async function verifyProductsVisible(page: Page, productNames: string[], timeout: number = 10000): Promise<void> {
   for (const productName of productNames) {
-    await expect(page.locator(`h5:has-text("${productName}")`)).toBeVisible({ timeout });
+    const productLocator = page.locator(`h5:has-text("${productName}")`);
+    await productLocator.waitFor({ state: 'visible', timeout });
+    
+    // Verify product is visible using Chai
+    const isVisible = await productLocator.isVisible();
+    expect(isVisible).to.be.true;
   }
 }
 
