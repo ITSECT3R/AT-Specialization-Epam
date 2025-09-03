@@ -1,0 +1,82 @@
+import { test, expect } from '@playwright/test';
+import { loginUser } from './utils/login';
+
+test.describe('Products Shop & Cart Testing', () => {
+  
+  test('View detailed product information', async ({ page }) => {
+    // Given I am on the Practice Software Testing homepage
+    await page.goto('/');
+    await expect(page).toHaveTitle(/Practice Software Testing/);
+    
+    // When I click on the Bolt Cutters from the product list
+    await page.click('text=Bolt Cutters');
+    
+    // And I view the product details page
+    await expect(page).toHaveURL(/.*\/product\/.*/);
+    await expect(page.locator('[data-test="product-name"]')).toContainText('Bolt Cutters');
+    
+    // And I check the product specifications and images
+    await expect(page.getByRole('img', { name: 'Bolt Cutters' })).toBeVisible();
+    await expect(page.locator('[data-test="product-description"]')).toBeVisible();
+    
+    // Then I should see "$48.41" as product's price
+    await expect(page.getByText('$')).toContainText('$48.41');
+
+    // And I should see "Aliquam viverra scelerisque tempus..." as description
+    await expect(page.locator('[data-test="product-description"]'))
+      .toContainText('Aliquam viverra scelerisque tempus. Ut vehicula, ex sed elementum');
+    
+    // And I should see Related Products including "combination pilers, pilers, etc."
+    await expect(page.getByRole('link', { name: 'Combination Pliers' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Combination Pliers' })).toContainText(/Combination Pliers More information/i);
+  });
+
+  test('Add Thor Hammer to shopping cart', async ({ page }) => {
+    // Given I am viewing the Thor Hammer details page
+    await page.goto('/');
+    await page.click('text=Thor Hammer $11.14');
+    await expect(page).toHaveURL(/.*\/product\/.*/);
+    await expect(page.locator('[data-test="product-name"]')).toContainText('Thor Hammer');
+    
+    // When I select the desired quantity to "1" for the product
+    await expect(page.locator('[data-test="quantity"]')).toHaveValue('1');
+
+    // And I click the "Add to Cart" button
+    await page.click('[data-test="add-to-cart"]');
+
+    // Wait for the cart quantity to be visible
+    await page.waitForSelector('[data-test="nav-cart"]', { state: 'visible' });
+
+    // Verify item was added (optional step)
+    await expect(page.locator('[data-test="cart-quantity"]')).toContainText('1');
+    
+    // And I navigate to the shopping cart page
+    await page.waitForSelector('[data-test="nav-cart"]', { state: 'visible' });
+    await page.click('[data-test="nav-cart"]');
+    await expect(page).toHaveURL(/.*\/checkout/);
+    
+    // Then I should see the Thor Hammer product in my cart with correct quantity of "1" and price "$11.14"
+    await expect(page.getByRole('cell', { name: 'Thor Hammer', exact: true })).toContainText('Thor Hammer');
+    await expect(page.locator('[data-test="cart-quantity"]')).toContainText('1');
+    await expect(page.locator('[data-test="cart-total"]')).toContainText('$11.14');
+  });
+
+  test('Add product to favorites list', async ({ page }) => {
+    // Given I am logged in and viewing the Long Nose Pilers product details page
+    await loginUser(page);
+    
+    // Navigate to Long Nose Pilers product
+    await page.goto('/');
+    await page.waitForLoadState('load');
+    await page.getByRole('link', { name: 'Long Nose Pliers Long Nose Pliers Out of stock $14.24' }).click();
+    await expect(page).toHaveURL(/.*\/product\/.*/);
+    await expect(page.locator('[data-test="product-name"]')).toContainText('Long Nose Pliers');
+    
+    // When I click the "Add to Favorites" or star icon
+    await page.click('[data-test="add-to-favorites"]');
+    
+    // Then I should see visual feedback that the product was added to favorites
+    // Since we're logged in, it should successfully add to favorites
+    await expect(page.locator('div').filter({ hasText: 'Product added to your' }).nth(2)).toHaveText("Product added to your favorites list.");
+  });
+});

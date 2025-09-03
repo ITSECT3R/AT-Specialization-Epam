@@ -1,0 +1,59 @@
+{
+  "name": "at-specializtion-epam",
+  "version": "1.0.0",
+  "description": "EPAM AT Specialization - Test Automation Framework combining Playwright and Mocha+Chai",
+  "main": "index.js",
+  "keywords": [
+    "test-automation",
+    "playwright", 
+    "mocha",
+    "chai",
+    "typescript",
+    "bdd",
+    "e2e-testing"
+  ],
+  "author": "EPAM AT Specialization Student",
+  "license": "ISC",
+  "scripts": {
+    "test": "npm run test:mocha",
+    "test:mocha": "mocha --require ts-node/register 'tests-mocha/**/*.spec.ts'",
+    "test:mocha:watch": "npm run test:mocha -- --watch",
+    
+    "test:all": "npm run test:mocha && npm run test:playwright",
+    
+    "test:playwright": "npx playwright test",
+    "test:playwright:headed": "npx playwright test --headed",
+    "test:playwright:debug": "npx playwright test --debug",
+    "test:playwright:ui": "npx playwright test --ui",
+
+    "test:login": "npx playwright test tests/1-login.spec.ts",
+    "test:profile": "npx playwright test tests/2-profile.spec.ts",
+    "test:products": "npx playwright test tests/3-products-and-cart.spec.ts",
+    "test:search": "npx playwright test tests/4-search-and-filter.spec.ts",
+    "test:checkout": "npx playwright test tests/5-checkout.spec.ts",
+
+    "show-report": "npx playwright show-report",
+    "install-browsers": "npx playwright install",
+    "clean": "rm -rf test-results playwright-report coverage",
+    "lint": "echo 'Linting not configured yet'",
+    "format": "echo 'Formatting not configured yet'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ITSECT3R/AT-Specializtion-Epam.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ITSECT3R/AT-Specializtion-Epam/issues"
+  },
+  "homepage": "https://github.com/ITSECT3R/AT-Specializtion-Epam#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.54.2",
+    "@types/chai": "^5.2.2",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^24.3.0",
+    "chai": "^6.0.1",
+    "mocha": "^11.7.1",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0"
+  }
+}
