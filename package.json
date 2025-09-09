@@ -1,7 +1,7 @@
 {
   "name": "at-specializtion-epam",
   "version": "1.0.0",
-  "description": "EPAM AT Specialization - Test Automation Framework combining Playwright and Mocha+Chai",
+  "description": "EPAM AT Specialization - Test Automation Framework Playwright + Chai",
   "main": "index.js",
   "keywords": [
     "test-automation",
@@ -14,7 +14,7 @@
   "author": "EPAM AT Specialization Student",
   "license": "ISC",
   "scripts": {
-    "test:all": "npm run test:mocha && npm run test:playwright",
+    "test:all": "npm run test:playwright",
 
     "test:playwright": "npx playwright test",
     "test:playwright:headed": "npx playwright test --headed",

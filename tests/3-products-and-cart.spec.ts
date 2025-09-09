@@ -1,5 +1,8 @@
 import { test } from '@playwright/test';
 import { expect } from 'chai';
+import * as chai from 'chai';
+chai.should();
+import { assert } from 'chai';
 import { loginUser } from './utils/login';
 
 test.describe('Products Shop & Cart Testing', () => {
@@ -8,7 +11,8 @@ test.describe('Products Shop & Cart Testing', () => {
         // Given I am on the Practice Software Testing homepage
     await page.goto('/');
     await page.waitForLoadState('load');
-    expect(page.url()).to.equal('https://practicesoftwaretesting.com/');
+  
+  assert.equal(page.url(), 'https://practicesoftwaretesting.com/', 'Should be on homepage');
 
     // When I click on the Bolt Cutters from the product list
     await page.click('text=Bolt Cutters');
@@ -18,18 +22,21 @@ test.describe('Products Shop & Cart Testing', () => {
     expect(page.url()).to.match(/.*\/product\/.*/);
 
     const productName = await page.locator('[data-test="product-name"]').textContent();
-    expect(productName).to.include('Bolt Cutters');
+  
+  (productName as any).should.include('Bolt Cutters');
     
     // And I check the product specifications and images
     const productImage = page.getByRole('img', { name: 'Bolt Cutters' });
     await productImage.waitFor({ state: 'visible' });
     const isImageVisible = await productImage.isVisible();
-    expect(isImageVisible).to.be.true;
+  
+  assert.isTrue(isImageVisible, 'Product image should be visible');
     
     const productDescription = page.locator('[data-test="product-description"]');
     await productDescription.waitFor({ state: 'visible' });
     const isDescriptionVisible = await productDescription.isVisible();
-    expect(isDescriptionVisible).to.be.true;
+  
+  (isDescriptionVisible as any).should.be.true;
     
     // Then I should see "$48.41" as product's price
     const priceElement = page.getByText('$');
@@ -55,14 +62,17 @@ test.describe('Products Shop & Cart Testing', () => {
     await page.goto('/');
     await page.click('text=Thor Hammer $11.14');
     await page.waitForURL(/.*\/product\/.*/);
-    expect(page.url()).to.match(/.*\/product\/.*/);
+  
+  assert.match(page.url(), /.*\/product\/.*/, 'Should be on product page');
 
     const productName = await page.locator('[data-test="product-name"]').textContent();
-    expect(productName).to.include('Thor Hammer');
+  
+  (productName as any).should.include('Thor Hammer');
     
     // When I select the desired quantity to "1" for the product
     const quantityValue = await page.locator('[data-test="quantity"]').inputValue();
-    expect(quantityValue).to.equal('1');
+  
+  assert.equal(quantityValue, '1', 'Quantity should be 1');
 
     // And I click the "Add to Cart" button
     await page.click('[data-test="add-to-cart"]');
@@ -72,25 +82,30 @@ test.describe('Products Shop & Cart Testing', () => {
 
     // Verify item was added (optional step)
     const cartQuantityText = await page.locator('[data-test="cart-quantity"]').textContent();
-    expect(cartQuantityText).to.include('1');
+  
+  (cartQuantityText as any).should.include('1');
     
     // And I navigate to the shopping cart page
     await page.waitForSelector('[data-test="nav-cart"]', { state: 'visible' });
     await page.click('[data-test="nav-cart"]');
     await page.waitForURL(/.*\/checkout/);
     const checkoutUrl = page.url();
-    expect(checkoutUrl).to.match(/.*\/checkout/);
+  
+  assert.match(checkoutUrl, /.*\/checkout/, 'Should be on checkout page');
     
     // Then I should see the Thor Hammer product in my cart with correct quantity of "1" and price "$11.14"
     const thorHammerCell = page.getByRole('cell', { name: 'Thor Hammer', exact: true });
     const thorHammerText = await thorHammerCell.textContent();
-    expect(thorHammerText).to.include('Thor Hammer');
+  
+  (thorHammerText as any).should.include('Thor Hammer');
     
     const cartQuantity = await page.locator('[data-test="cart-quantity"]').textContent();
-    expect(cartQuantity).to.include('1');
+  
+  assert.include(cartQuantity, '1', 'Cart quantity should be 1');
     
     const cartTotal = await page.locator('[data-test="cart-total"]').textContent();
-    expect(cartTotal).to.include('$11.14');
+  
+  (cartTotal as any).should.include('$11.14');
   });
 
   test('Add product to favorites list', async ({ page }) => {
@@ -103,10 +118,12 @@ test.describe('Products Shop & Cart Testing', () => {
     await page.getByRole('link', { name: 'Long Nose Pliers Long Nose Pliers Out of stock $14.24' }).click();
     await page.waitForURL(/.*\/product\/.*/);
     const productUrl = page.url();
-    expect(productUrl).to.match(/.*\/product\/.*/);
+  
+  assert.match(productUrl, /.*\/product\/.*/, 'Should be on product page');
     
     const productName = await page.locator('[data-test="product-name"]').textContent();
-    expect(productName).to.include('Long Nose Pliers');
+  
+  (productName as any).should.include('Long Nose Pliers');
     
     // When I click the "Add to Favorites" or star icon
     await page.click('[data-test="add-to-favorites"]');
@@ -116,6 +133,7 @@ test.describe('Products Shop & Cart Testing', () => {
     const favoritesMessage = page.locator('div').filter({ hasText: 'Product added to your' }).nth(2);
     await favoritesMessage.waitFor({ state: 'visible' });
     const messageText = await favoritesMessage.textContent();
-    expect(messageText).to.include("Product added to your favorites list.");
+  
+  assert.include(messageText, "Product added to your favorites list.", 'Should show favorites message');
   });
 });

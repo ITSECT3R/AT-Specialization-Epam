@@ -1,5 +1,8 @@
 import { test } from '@playwright/test';
 import { expect } from 'chai';
+import * as chai from 'chai';
+chai.should();
+import { assert } from 'chai';
 import { getTestUser } from './utils/get-user';
 import { loginUser } from './utils/login';
 import { registerUser } from './utils/register';
@@ -16,12 +19,18 @@ test.describe('Test Login', () => {
     const loggedInUser = await loginUser(page, testUser);
 
     // Step 4: Verify we're logged in successfully
-    await page.waitForURL(/.*\/account/);
-    expect(page.url()).to.match(/.*\/account/);
+    const accountUrl: any = page.url();
+    const urlAccountReg = /.*\/account/;
+    await page.waitForURL(urlAccountReg);
+    expect(page.url()).to.match(urlAccountReg);
 
     const navMenu = page.locator('[data-test="nav-menu"]');
     await navMenu.waitFor({ state: 'visible' });
     const navMenuText = await navMenu.textContent();
-    expect(navMenuText).to.include(`${loggedInUser.firstName} ${loggedInUser.lastName}`);
-  });
+  // Using 'should' style
+  (navMenuText as any).should.include(`${loggedInUser.firstName} ${loggedInUser.lastName}`);
+    // Chai 'assert' style
+
+    assert.match(accountUrl, urlAccountReg, 'URL should match account page');
+    });
 });

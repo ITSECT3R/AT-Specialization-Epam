@@ -1,9 +1,13 @@
 import { test } from '@playwright/test';
 import { expect } from 'chai';
+import * as chai from 'chai';
+chai.should();
+import { assert } from 'chai';
 import { loginUser } from './utils/login';
 
 test.describe('Profile', () => {
   test('Update user profile information', async ({ page }) => {
+
     // Given I am logged in to my account
     await loginUser(page);
     
@@ -11,7 +15,8 @@ test.describe('Profile', () => {
     await page.click('[data-test="nav-menu"]');
     await page.click('[data-test="nav-my-profile"]');
     await page.waitForURL(/.*\/profile/);
-    expect(page.url()).to.match(/.*\/profile/);
+  // Using 'assert' style
+  assert.match(page.url(), /.*\/profile/, 'URL should match profile page');
 
     // And I update my personal information with new valid data
     const updatedFirstName = 'Christopher';
@@ -31,8 +36,11 @@ test.describe('Profile', () => {
     const lastNameValue = await page.locator('[data-test="last-name"]').inputValue();
     const phoneValue = await page.locator('[data-test="phone"]').inputValue();
     
-    expect(firstNameValue).to.equal(updatedFirstName);
-    expect(lastNameValue).to.equal(updatedLastName);
-    expect(phoneValue).to.equal(updatedPhone);
+  // Using 'should' style
+  (firstNameValue as any).should.equal(updatedFirstName);
+  // Using 'expect' style (keep one for variety)
+  expect(lastNameValue).to.equal(updatedLastName);
+  // Using 'assert' style
+  assert.equal(phoneValue, updatedPhone, 'Phone value should match updated phone');
   });
 });
