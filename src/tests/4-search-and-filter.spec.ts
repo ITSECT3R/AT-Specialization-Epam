@@ -3,8 +3,8 @@ import { expect } from 'chai';
 import * as chai from 'chai';
 chai.should();
 import { assert } from 'chai';
-import { loginUser } from './utils/login';
-import { applyFiltersAndSort } from './utils/filter-utils';
+import { loginUser } from '../utils/login';
+import { applyFiltersAndSort } from '../utils/filter-utils';
 
 test.describe('Search & Filter', () => {
   

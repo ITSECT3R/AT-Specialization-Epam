@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import * as chai from 'chai';
 chai.should();
 import { assert } from 'chai';
-import { loginUser } from './utils/login';
+import { loginUser } from '../utils/login';
 
 test.describe('Profile', () => {
   test('Update user profile information', async ({ page }) => {

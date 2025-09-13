@@ -3,9 +3,9 @@ import { expect } from 'chai';
 import * as chai from 'chai';
 chai.should();
 import { assert } from 'chai';
-import { getTestUser } from './utils/get-user';
-import { loginUser } from './utils/login';
-import { registerUser } from './utils/register';
+import { getTestUser } from '../utils/get-user';
+import { loginUser } from '../utils/login';
+import { registerUser } from '../utils/register';
 
 test.describe('Test Login', () => {
   test('User registration and login process', async ({ page }) => {
