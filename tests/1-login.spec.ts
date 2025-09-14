@@ -1,4 +1,8 @@
-import { test, expect } from '@playwright/test';
+import { test } from '@playwright/test';
+import { expect } from 'chai';
+import * as chai from 'chai';
+chai.should();
+import { assert } from 'chai';
 import { getTestUser } from './utils/get-user';
 import { loginUser } from './utils/login';
 import { registerUser } from './utils/register';
@@ -15,7 +19,18 @@ test.describe('Test Login', () => {
     const loggedInUser = await loginUser(page, testUser);
 
     // Step 4: Verify we're logged in successfully
-    await expect(page).toHaveURL(/.*\/account/, { timeout: 10000 });
-    await expect(page.locator('[data-test="nav-menu"]')).toContainText(`${loggedInUser.firstName} ${loggedInUser.lastName}`);
-  });
+    const accountUrl: any = page.url();
+    const urlAccountReg = /.*\/account/;
+    await page.waitForURL(urlAccountReg);
+    expect(page.url()).to.match(urlAccountReg);
+
+    const navMenu = page.locator('[data-test="nav-menu"]');
+    await navMenu.waitFor({ state: 'visible' });
+    const navMenuText = await navMenu.textContent();
+  // Using 'should' style
+  (navMenuText as any).should.include(`${loggedInUser.firstName} ${loggedInUser.lastName}`);
+    // Chai 'assert' style
+
+    assert.match(accountUrl, urlAccountReg, 'URL should match account page');
+    });
 });

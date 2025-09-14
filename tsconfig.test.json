@@ -9,10 +9,10 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "types": ["node", "mocha", "chai"]
+    "types": ["node", "chai"]
   },
   "include": [
-    "tests-mocha/**/*"
+    "tests-playwright/**/*"
   ],
   "exclude": [
     "node_modules"
