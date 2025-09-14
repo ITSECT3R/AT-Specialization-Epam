@@ -15,7 +15,7 @@ test.describe('Search & Filter', () => {
     await page.waitForLoadState('load');
     const pageTitle = await page.title();
 
-  assert.match(pageTitle, /Practice Software Testing/, 'Page title should match');
+    assert.match(pageTitle, /Practice Software Testing/, 'Page title should match');
     
     // When I enter "hammer" in the search box
     await page.fill('[data-test="search-query"]', 'hammer');
@@ -28,30 +28,27 @@ test.describe('Search & Filter', () => {
     await searchCaption.waitFor({ state: 'visible' });
     const isCaptionVisible = await searchCaption.isVisible();
 
-  (isCaptionVisible as any).should.be.true;
+    (isCaptionVisible as any).should.be.true;
     
     const searchedForHeader = page.locator('h3:has-text("Searched for: hammer")');
     await searchedForHeader.waitFor({ state: 'visible' });
     const isHeaderVisible = await searchedForHeader.isVisible();
 
-  expect(isHeaderVisible).to.be.true;
+    expect(isHeaderVisible).to.be.true;
     
     // Then I should see products related to "hammer" displayed in the results
     const searchTermText = await page.locator('[data-test="search-term"]').textContent();
+    assert.equal(searchTermText, 'hammer', 'Search term should be hammer');
 
-  assert.equal(searchTermText, 'hammer', 'Search term should be hammer');
 
     // Verify Thor Hammer appears in search results
     const thorHammer = page.locator('text=Thor Hammer');
     await thorHammer.waitFor({ state: 'visible' });
-    const isThorHammerVisible = await thorHammer.isVisible();
-
-  (isThorHammerVisible as any).should.be.true;
+    await thorHammer.isVisible();
 
     // Verify search results contain relevant products
     const searchCompleted = await page.locator('[data-test="search_completed"]').textContent();
-
-  expect(searchCompleted).to.match(/hammer/i);
+    expect(searchCompleted).to.match(/hammer/i);
   });
 
   test('Filter and sort products on the main page', async ({ page }) => {
@@ -91,21 +88,21 @@ test.describe('Search & Filter', () => {
     await openEndSpannersElement.waitFor({ state: 'visible' });
     const isOpenEndVisible = await openEndSpannersElement.isVisible();
 
-  assert.isTrue(isOpenEndVisible, 'Open-end Spanners should be visible');
+    assert.isTrue(isOpenEndVisible, 'Open-end Spanners should be visible');
     
     await swissWoodcarvingChiselsElement.waitFor({ state: 'visible' });
     const isSwissWoodcarvingVisible = await swissWoodcarvingChiselsElement.isVisible();
 
-  (isSwissWoodcarvingVisible as any).should.be.true;
+    (isSwissWoodcarvingVisible as any).should.be.true;
     
     await adjustableWrenchElement.waitFor({ state: 'visible' });
     const isAdjustableWrenchVisible = await adjustableWrenchElement.isVisible();
 
-  expect(isAdjustableWrenchVisible).to.be.true;
+    expect(isAdjustableWrenchVisible).to.be.true;
     
     await clawHammerElement.waitFor({ state: 'visible' });
     const isClawHammerVisible = await clawHammerElement.isVisible();
 
-  assert.isTrue(isClawHammerVisible, 'Claw Hammer should be visible');
+    assert.isTrue(isClawHammerVisible, 'Claw Hammer should be visible');
   });
 });

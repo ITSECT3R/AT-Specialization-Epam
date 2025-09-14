@@ -4,7 +4,7 @@ import { newUser } from '../data/user-info';
 const browserUsers = new Map<string, Record<string, string>>();
 
 // Dynamic user data generation for browser isolation
-export const generateUniqueEmail = (): string => {
+export function generateUniqueEmail(): string {
   const timestamp = Date.now();
   const randomSuffix = Math.random().toString(36).substring(2, 8);
   // Use a combination of timestamp and random for uniqueness

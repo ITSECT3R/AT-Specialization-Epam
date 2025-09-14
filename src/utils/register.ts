@@ -1,8 +1,10 @@
 import { Page, expect } from '@playwright/test';
+import { urls } from '../po/index.page.ts';
+import { RegisterPage } from '../po/register.page.ts';
 
 export interface RegistrationResult {
   success: boolean;
-  user: any;
+  user: any;  
   error?: string;
 }
 
@@ -15,30 +17,31 @@ export interface RegistrationResult {
 
 export async function registerUser(page: Page, user: any): Promise<RegistrationResult> {
   try {
+    const register = new RegisterPage(page);
     console.log(`🔄 Starting registration for user: ${user.email}`);
-    
+
     // Navigate to registration page
-    await page.goto('/auth/register');
-    await page.waitForLoadState('load');
-    
-    // Fill registration form using the exact locators from your working test
-    await page.fill('[data-test="first-name"]', user.firstName);
-    await page.fill('[data-test="last-name"]', user.lastName);
-    await page.fill('[data-test="dob"]', user.dob);
-    await page.fill('[data-test="street"]', user.street);
-    await page.fill('[data-test="postal_code"]', user.postalCode);
-    await page.fill('[data-test="city"]', user.city);
-    await page.fill('[data-test="state"]', user.state);
-    await page.selectOption('[data-test="country"]', { label: user.country });
-    await page.fill('[data-test="phone"]', user.phone);
-    await page.fill('[data-test="email"]', user.email);
-    await page.fill('[data-test="password"]', user.password);
+    await register.navigateTo(urls().register);
+
+    // Fill registration form using inputs from register.page.ts
+    const inputs = register.inputs();
+    await register.fillInput(inputs.firstName, user.firstName);
+    await register.fillInput(inputs.lastName, user.lastName);
+    await register.fillInput(inputs.dob, user.dob);
+    await register.fillInput(inputs.street, user.street);
+    await register.fillInput(inputs.postalCode, user.postalCode);
+    await register.fillInput(inputs.city, user.city);
+    await register.fillInput(inputs.state, user.state);
+    await page.selectOption(inputs.country, { label: user.country });
+    await register.fillInput(inputs.phone, user.phone);
+    await register.fillInput(inputs.email, user.email);
+    await register.fillInput(inputs.password, user.password);
     
     // Submit registration
-    await page.click('[data-test="register-submit"]');
+    await register.clickElement(inputs.registerButton);
     
     // Wait for registration success (redirect to login page)
-    await expect(page).toHaveURL(/.*\/login/, { timeout: 15000 });
+    await expect(page).toHaveURL(urls().login, { timeout: 15000 });
     
     console.log(`✅ Successfully registered user: ${user.email}`);
     return {

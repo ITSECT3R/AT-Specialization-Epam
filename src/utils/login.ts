@@ -1,23 +1,31 @@
-import { expect } from '@playwright/test';
+import { expect, Page } from '@playwright/test';
 import { getTestUser } from './get-user';
+import { LoginPage } from '../po/login.page';
+import { urls } from '../po/index.page';
 
 // Simple login function - only attempts login, no registration logic
-async function attemptLogin(page: any, user: any) {
+interface User {
+  email: string;
+  password: string;
+}
+
+async function attemptLogin(page: Page, user: User) {
+  const login = new LoginPage(page);
   console.log(`🔑 Attempting login for user: ${user.email}`);
-  
-  await page.goto('/auth/login');
-  await page.waitForLoadState('load');
-  
-  await page.fill('[data-test="email"]', user.email);
-  await page.fill('[data-test="password"]', user.password);
-  await page.click('[data-test="login-submit"]');
-  
-  await expect(page).toHaveURL(/.*\/account/, { timeout: 10000 });
+
+  await login.navigateTo(urls().login);
+  await login.waitForLoad();
+
+  await login.fillInput(login.enterLogin().emailInput, user.email);
+  await login.fillInput(login.enterLogin().passwordInput, user.password);
+  await login.clickElement(login.enterLogin().submitBtn);
+
+  await expect(page).toHaveURL(urls().account, { timeout: 10000 });
   console.log(`✅ Login successful for user: ${user.email}`);
 }
 
 // Login function with registration fallback
-export async function loginUser(page: any, user?: any) {
+export async function loginUser(page: Page, user?: any) {
   const testUser = user || getTestUser('login-test-session');
 
   try {

@@ -3,34 +3,31 @@ import { expect } from 'chai';
 import * as chai from 'chai';
 chai.should();
 import { assert } from 'chai';
-import { getTestUser } from '../utils/get-user';
-import { loginUser } from '../utils/login';
-import { registerUser } from '../utils/register';
+import { LoginPage } from '../po/login.page';
+import { tools, urls } from '../po/index.page';
 
 test.describe('Test Login', () => {
   test('User registration and login process', async ({ page }) => {
+    const loginPage = new LoginPage(page);
+    
     // Step 1: Get a test user
-    const testUser = getTestUser('login-test-session');
+    const testUser = tools.getTestUser('login-test-session');
 
     // step 2: register a user
-    await registerUser(page, testUser);
+    await tools.registerUser(page, testUser);
 
     // Step 3: Now attempt login (which will handle fallback registration if needed)
-    const loggedInUser = await loginUser(page, testUser);
+    const loggedInUser = await tools.loginUser(page, testUser);
 
-    // Step 4: Verify we're logged in successfully
-    const accountUrl: any = page.url();
-    const urlAccountReg = /.*\/account/;
-    await page.waitForURL(urlAccountReg);
-    expect(page.url()).to.match(urlAccountReg);
-
-    const navMenu = page.locator('[data-test="nav-menu"]');
-    await navMenu.waitFor({ state: 'visible' });
-    const navMenuText = await navMenu.textContent();
-  // Using 'should' style
-  (navMenuText as any).should.include(`${loggedInUser.firstName} ${loggedInUser.lastName}`);
-    // Chai 'assert' style
-
-    assert.match(accountUrl, urlAccountReg, 'URL should match account page');
+    // Step 4: Verify we're logged in successfully using LoginPage
+    await loginPage.waitForLoad();
+    
+    const navMenuText = await loginPage.getNavMenuText();
+    const accountUrl = loginPage.getCurrentUrl();
+    
+    // Assertions remain the same
+    expect(accountUrl).to.equal(urls().account);
+    (navMenuText as any).should.include(`${loggedInUser.firstName} ${loggedInUser.lastName}`);
+    assert.strictEqual(accountUrl, urls().account, 'URL should match account page');
     });
 });

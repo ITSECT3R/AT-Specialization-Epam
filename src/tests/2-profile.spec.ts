@@ -4,43 +4,36 @@ import * as chai from 'chai';
 chai.should();
 import { assert } from 'chai';
 import { loginUser } from '../utils/login';
+import { ProfilePage } from '../po/profile.page';
 
 test.describe('Profile', () => {
   test('Update user profile information', async ({ page }) => {
+    const profilePage = new ProfilePage(page);
 
     // Given I am logged in to my account
     await loginUser(page);
     
-    // When I navigate to my profile page
-    await page.click('[data-test="nav-menu"]');
-    await page.click('[data-test="nav-my-profile"]');
-    await page.waitForURL(/.*\/profile/);
-  // Using 'assert' style
-  assert.match(page.url(), /.*\/profile/, 'URL should match profile page');
+    // When I navigate to my profile page using ProfilePage
+    await profilePage.navigateToProfile();
+    
+    // Verify we're on profile page using ProfilePage method
+    assert.match(profilePage.getCurrentUrl(), /.*\/profile/, 'URL should match profile page');
 
     // And I update my personal information with new valid data
     const updatedFirstName = 'Christopher';
     const updatedLastName = 'Hopkins';
     const updatedPhone = '9876543210';
     
-    await page.fill('[data-test="first-name"]', updatedFirstName);
-    await page.fill('[data-test="last-name"]', updatedLastName);
-    await page.fill('[data-test="phone"]', updatedPhone);
+    await profilePage.updatePersonalInfo(updatedFirstName, updatedLastName, updatedPhone);
     
     // And I save the changes
-    await page.waitForSelector('[data-test="update-profile-submit"]', { state: 'visible' });
-    await page.click('[data-test="update-profile-submit"]'); // this click does not work :(
+    await profilePage.clickSave(); // this click does not work :(
 
-    // Additional verification: Check if the updated data persists
-    const firstNameValue = await page.locator('[data-test="first-name"]').inputValue();
-    const lastNameValue = await page.locator('[data-test="last-name"]').inputValue();
-    const phoneValue = await page.locator('[data-test="phone"]').inputValue();
-    
-  // Using 'should' style
-  (firstNameValue as any).should.equal(updatedFirstName);
-  // Using 'expect' style (keep one for variety)
-  expect(lastNameValue).to.equal(updatedLastName);
-  // Using 'assert' style
-  assert.equal(phoneValue, updatedPhone, 'Phone value should match updated phone');
+    // Additional verification: Check if the updated data persists using ProfilePage
+    const personalInfo = await profilePage.getPersonalInfoValues();
+
+    expect(personalInfo.firstName).to.equal(updatedFirstName);
+    (personalInfo.lastName as any).should.equal(updatedLastName);
+    assert.equal(personalInfo.phone, updatedPhone, 'Phone value should match updated phone');
   });
 });
