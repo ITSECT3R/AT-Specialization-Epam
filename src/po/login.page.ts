@@ -1,6 +1,6 @@
 import { Page } from '@playwright/test';
 import { BasePage } from './base.page';
-import { urls } from './index.page';
+import { urls } from '.';
 
 export class LoginPage extends BasePage {
   private readonly navMenu = '[data-test="nav-menu"]';
@@ -16,7 +16,7 @@ export class LoginPage extends BasePage {
   }
 
   async verifyAccountUrl(): Promise<boolean> {
-    return this.getCurrentUrl().match(urls().account) !== null;
+    return this.getCurrentUrl().match(urls.account) !== null;
   }
 
   enterLogin(): { emailInput: string; passwordInput: string; submitBtn: string } {

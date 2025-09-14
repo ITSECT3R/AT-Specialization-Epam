@@ -5,6 +5,7 @@ chai.should();
 import { assert } from 'chai';
 import { loginUser } from '../utils/login';
 import { ProfilePage } from '../po/profile.page';
+import { urls } from '../po';
 
 test.describe('Profile', () => {
   test('Update user profile information', async ({ page }) => {
@@ -14,10 +15,10 @@ test.describe('Profile', () => {
     await loginUser(page);
     
     // When I navigate to my profile page using ProfilePage
-    await profilePage.navigateToProfile();
+    await profilePage.navigateTo(urls.profile);
     
     // Verify we're on profile page using ProfilePage method
-    assert.match(profilePage.getCurrentUrl(), /.*\/profile/, 'URL should match profile page');
+    assert.equal(profilePage.getCurrentUrl(), urls.profile, 'URL should match profile page');
 
     // And I update my personal information with new valid data
     const updatedFirstName = 'Christopher';

@@ -1,9 +1,8 @@
 import { expect, Page } from '@playwright/test';
 import { getTestUser } from './get-user';
 import { LoginPage } from '../po/login.page';
-import { urls } from '../po/index.page';
+import { urls } from '../po';
 
-// Simple login function - only attempts login, no registration logic
 interface User {
   email: string;
   password: string;
@@ -13,14 +12,14 @@ async function attemptLogin(page: Page, user: User) {
   const login = new LoginPage(page);
   console.log(`🔑 Attempting login for user: ${user.email}`);
 
-  await login.navigateTo(urls().login);
+  await login.navigateTo(urls.login);
   await login.waitForLoad();
 
-  await login.fillInput(login.enterLogin().emailInput, user.email);
-  await login.fillInput(login.enterLogin().passwordInput, user.password);
+  await page.fill(login.enterLogin().emailInput, user.email);
+  await page.fill(login.enterLogin().passwordInput, user.password);
   await login.clickElement(login.enterLogin().submitBtn);
 
-  await expect(page).toHaveURL(urls().account, { timeout: 10000 });
+  await expect(page).toHaveURL(urls.account, { timeout: 10000 });
   console.log(`✅ Login successful for user: ${user.email}`);
 }
 

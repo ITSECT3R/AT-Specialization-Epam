@@ -1,7 +1,7 @@
 import { generateUniqueEmail } from "../utils/get-user.ts";
 
 export const newUser = {
-  email: 'gengmail@gmail.com',
+  email: generateUniqueEmail(),
   password: "shadowFax123!",
   firstName: "Christofer",
   lastName: "Hopkins",

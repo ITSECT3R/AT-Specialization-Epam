@@ -7,7 +7,7 @@ export class BasePage {
     this.page = page;
   }
 
-  async waitForUrl(url: string): Promise<void> {
+  async waitForUrl(url: string | RegExp): Promise<void> {
     await this.page.waitForURL(url);
   }
 
@@ -24,10 +24,6 @@ export class BasePage {
     await this.page.click(selector);
   }
 
-  async fillInput(selector: string, value: string): Promise<void> {
-    await this.page.fill(selector, value);
-  }
-
   async getInputValue(selector: string): Promise<string> {
     return await this.page.locator(selector).inputValue();
   }
@@ -36,6 +32,5 @@ export class BasePage {
     await this.page.goto(url);
     await this.page.waitForLoadState('load');
   }
-
 }
 

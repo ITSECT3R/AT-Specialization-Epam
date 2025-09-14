@@ -2,6 +2,7 @@ import { Page } from '@playwright/test';
 import { BasePage } from './base.page';
 import { HeaderComponent } from '../components/header.component';
 import { ProductCardComponent } from '../components/product-card.component';
+import { urls } from '.';
 
 /**
  * ProductDetailPage - Uses BasePage + Components
@@ -10,6 +11,30 @@ import { ProductCardComponent } from '../components/product-card.component';
 export class ProductDetailPage extends BasePage {
   public readonly header: HeaderComponent;
   public readonly productCard: ProductCardComponent;
+  
+  public products = {
+    Bolt_Cutters: {
+      name: 'Bolt Cutters',
+      description: 'Aliquam viverra scelerisque tempus. Ut vehicula, ex sed elementum',
+      price: '$48.41',
+    },
+    Thor_Hammer: {
+      name: 'Thor Hammer',
+      description: 'A powerful hammer for all your needs.',
+      price: '$11.14',
+    },
+    Long_Nose_Pliers: {
+      name: 'Long Nose Pliers',
+      description: 'Perfect for reaching tight spaces.',
+      price: '$14.24',
+    },
+    Combination_Pliers: {
+      name: 'Combination Pliers',
+      description: 'Versatile pliers for various tasks.',
+      price: '$14.24',
+    },
+    productRegex: /^https:\/\/practicesoftwaretesting\.com\/product\/.*/
+  };
 
   constructor(page: Page) {
     super(page);
@@ -20,11 +45,11 @@ export class ProductDetailPage extends BasePage {
   async addToCartAndNavigateToCart(): Promise<void> {
     await this.productCard.addToCart();
     await this.header.clickCart();
-    await this.waitForUrl(/.*\/checkout/); // Reusing BasePage method!
+    await this.waitForUrl(urls.checkout); 
   }
 
-  async verifyProductPage(): Promise<boolean> {
-    return this.getCurrentUrl().match(/.*\/product\/.*/) !== null; // Reusing BasePage method!
+  async verifyProductPage(url: string | RegExp): Promise<boolean> {
+    return this.getCurrentUrl().match(url) !== null; 
   }
 
   async getFavoritesMessage(): Promise<string> {

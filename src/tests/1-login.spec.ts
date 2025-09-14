@@ -4,7 +4,7 @@ import * as chai from 'chai';
 chai.should();
 import { assert } from 'chai';
 import { LoginPage } from '../po/login.page';
-import { tools, urls } from '../po/index.page';
+import { tools, urls } from '../po';
 
 test.describe('Test Login', () => {
   test('User registration and login process', async ({ page }) => {
@@ -25,9 +25,8 @@ test.describe('Test Login', () => {
     const navMenuText = await loginPage.getNavMenuText();
     const accountUrl = loginPage.getCurrentUrl();
     
-    // Assertions remain the same
-    expect(accountUrl).to.equal(urls().account);
+    expect(accountUrl).to.equal(urls.account);
     (navMenuText as any).should.include(`${loggedInUser.firstName} ${loggedInUser.lastName}`);
-    assert.strictEqual(accountUrl, urls().account, 'URL should match account page');
+    assert.strictEqual(accountUrl, urls.account, 'URL should match account page');
     });
 });

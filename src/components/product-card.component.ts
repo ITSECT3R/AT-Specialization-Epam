@@ -12,7 +12,10 @@ export class ProductCardComponent {
   private readonly productDescription = '[data-test="product-description"]';
   private readonly addToCartButton = '[data-test="add-to-cart"]';
   private readonly addToFavoritesButton = '[data-test="add-to-favorites"]';
-  private readonly quantity = '[data-test="quantity"]';
+  public quantity = '[data-test="quantity"]';
+  public cartQuantity = '[data-test="cart-quantity"]';
+  public navCart = '[data-test="nav-cart"]';
+  public cartTotal = '[data-test="cart-total"]';
 
   constructor(page: Page) {
     this.page = page;
@@ -23,6 +26,7 @@ export class ProductCardComponent {
   }
 
   async getProductName(): Promise<string> {
+    await this.page.locator(this.productName).waitFor({ state: 'visible' });
     return await this.page.locator(this.productName).textContent() || '';
   }
 

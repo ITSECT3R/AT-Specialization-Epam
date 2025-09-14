@@ -2,6 +2,7 @@ import { Page } from '@playwright/test';
 import { BasePage } from './base.page';
 import { HeaderComponent } from '../components/header.component';
 import { ProductCardComponent } from '../components/product-card.component';
+import { urls } from '.';
 
 /**
  * HomePage - Uses BasePage + Components
@@ -17,12 +18,12 @@ export class HomePage extends BasePage {
     this.productCard = new ProductCardComponent(page);
   }
 
-  async selectProduct(productText: string): Promise<void> {
+  async selectProduct(productText: string, productUrl: string | RegExp): Promise<void> {
     await this.productCard.clickProductByText(productText);
-    await this.waitForUrl(/.*\/product\/.*/); // Reusing BasePage method!
+    await this.waitForUrl(productUrl);
   }
 
   async verifyHomePage(): Promise<boolean> {
-    return this.getCurrentUrl() === 'https://practicesoftwaretesting.com/'; // Reusing BasePage method!
+    return this.getCurrentUrl() === urls.home; 
   }
 }

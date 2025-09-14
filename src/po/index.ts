@@ -1,5 +1,4 @@
 import { Page } from "@playwright/test";
-import { BasePage } from "./base.page.ts"
 import { LoginPage } from "./login.page.ts";
 import { HomePage } from "./home.page.ts";
 import { RegisterPage } from "./register.page.ts";
@@ -16,15 +15,15 @@ export function pages(page: Page): { [key: string]: LoginPage | HomePage | Regis
   };
 }
 
-export function urls(): { [key: string]: string } {
-  return {
-    home: '/',
-    login: 'https://practicesoftwaretesting.com/auth/login',
-    profile: 'https://practicesoftwaretesting.com/account/profile',
-    register: 'https://practicesoftwaretesting.com/auth/register',
-    account: 'https://practicesoftwaretesting.com/account',
-    checkout: 'https://practicesoftwaretesting.com/checkout',
-  };
-}
+export const urls = {
+  home: 'https://practicesoftwaretesting.com/',
+  login: 'https://practicesoftwaretesting.com/auth/login',
+  profile: 'https://practicesoftwaretesting.com/account/profile',
+  register: 'https://practicesoftwaretesting.com/auth/register',
+  account: 'https://practicesoftwaretesting.com/account',
+  checkout: 'https://practicesoftwaretesting.com/checkout',
+};
 
 export const tools = utils();
+
+

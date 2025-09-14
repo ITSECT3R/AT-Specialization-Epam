@@ -1,5 +1,5 @@
 import { Page, expect } from '@playwright/test';
-import { urls } from '../po/index.page.ts';
+import { urls } from '../po/index.ts';
 import { RegisterPage } from '../po/register.page.ts';
 
 export interface RegistrationResult {
@@ -21,27 +21,27 @@ export async function registerUser(page: Page, user: any): Promise<RegistrationR
     console.log(`🔄 Starting registration for user: ${user.email}`);
 
     // Navigate to registration page
-    await register.navigateTo(urls().register);
+    await register.navigateTo(urls.register);
 
     // Fill registration form using inputs from register.page.ts
     const inputs = register.inputs();
-    await register.fillInput(inputs.firstName, user.firstName);
-    await register.fillInput(inputs.lastName, user.lastName);
-    await register.fillInput(inputs.dob, user.dob);
-    await register.fillInput(inputs.street, user.street);
-    await register.fillInput(inputs.postalCode, user.postalCode);
-    await register.fillInput(inputs.city, user.city);
-    await register.fillInput(inputs.state, user.state);
+    await page.fill(inputs.firstName, user.firstName);
+    await page.fill(inputs.lastName, user.lastName);
+    await page.fill(inputs.dob, user.dob);
+    await page.fill(inputs.street, user.street);
+    await page.fill(inputs.postalCode, user.postalCode);
+    await page.fill(inputs.city, user.city);
+    await page.fill(inputs.state, user.state);
     await page.selectOption(inputs.country, { label: user.country });
-    await register.fillInput(inputs.phone, user.phone);
-    await register.fillInput(inputs.email, user.email);
-    await register.fillInput(inputs.password, user.password);
+    await page.fill(inputs.phone, user.phone);
+    await page.fill(inputs.email, user.email);
+    await page.fill(inputs.password, user.password);
     
     // Submit registration
     await register.clickElement(inputs.registerButton);
     
     // Wait for registration success (redirect to login page)
-    await expect(page).toHaveURL(urls().login, { timeout: 15000 });
+    await expect(page).toHaveURL(urls.login, { timeout: 15000 });
     
     console.log(`✅ Successfully registered user: ${user.email}`);
     return {
