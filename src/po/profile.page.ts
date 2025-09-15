@@ -1,6 +1,6 @@
 import { Page } from '@playwright/test';
 import { BasePage } from './base.page';
-import { urls } from '.';
+import { urls } from './index.page';
 
 export class ProfilePage extends BasePage {
   private readonly navMenu = '[data-test="nav-menu"]';

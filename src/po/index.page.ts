@@ -3,9 +3,6 @@ import { LoginPage } from "./login.page.ts";
 import { HomePage } from "./home.page.ts";
 import { RegisterPage } from "./register.page.ts";
 import { utils } from "../utils/index.utils.ts";
-import { register } from "module";
-
-
 
 export function pages(page: Page): { [key: string]: LoginPage | HomePage | RegisterPage } {
   return {

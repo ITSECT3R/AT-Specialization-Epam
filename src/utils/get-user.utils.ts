@@ -1,4 +1,4 @@
-import { newUser } from '../data/user-info';
+import { newUser } from '../data/user-info.data';
 
 // Store unique users per browser session using a Map
 const browserUsers = new Map<string, Record<string, string>>();

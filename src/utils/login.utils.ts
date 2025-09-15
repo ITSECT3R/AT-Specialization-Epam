@@ -1,7 +1,7 @@
 import { expect, Page } from '@playwright/test';
-import { getTestUser } from './get-user';
+import { getTestUser } from './get-user.utils';
 import { LoginPage } from '../po/login.page';
-import { urls } from '../po';
+import { urls } from '../po/index.page';
 
 interface User {
   email: string;
@@ -35,7 +35,7 @@ export async function loginUser(page: Page, user?: any) {
     console.log(`❌ Login failed for user: ${testUser.email}, will try registration`);
     
     // Import register function only when needed to avoid circular dependency
-    const { registerUser } = await import('./register');
+    const { registerUser } = await import('./register.utils');
     
     // Register the user
     const registrationResult = await registerUser(page, testUser);

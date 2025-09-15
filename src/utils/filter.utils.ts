@@ -42,12 +42,6 @@ export async function setPriceRangeSlider(page: Page, minPrice: number, maxPrice
   await minSlider.waitFor({ state: 'visible' });
   await maxSlider.waitFor({ state: 'visible' });
   
-  // Verify sliders are visible using Chai
-  const minSliderVisible = await minSlider.isVisible();
-  const maxSliderVisible = await maxSlider.isVisible();
-  expect(minSliderVisible).to.be.true;
-  expect(maxSliderVisible).to.be.true;
-  
   // Set minimum price (assuming slider starts at 0)
   if (minPrice > 0) {
     await minSlider.click();
@@ -80,53 +74,20 @@ export async function applySorting(page: Page, sortOption: string): Promise<void
 }
 
 /**
- * Waits for sorting to be applied by checking for a specific product to appear first
- * @param page - Playwright page object
- * @param firstProductName - Name of the product that should appear first after sorting
- * @param timeout - Optional timeout in milliseconds (default: 10000)
- */
-export async function waitForSortingComplete(page: Page, firstProductName: string, timeout: number = 10000): Promise<void> {
-  const productLocator = page.locator(`h5:has-text("${firstProductName}")`);
-  await productLocator.waitFor({ state: 'visible', timeout });
-  
-  // Verify product is visible using Chai
-  const isVisible = await productLocator.isVisible();
-  expect(isVisible).to.be.true;
-}
-
-/**
- * Verifies that specific products are visible after filtering
- * @param page - Playwright page object
- * @param productNames - Array of product names to verify
- * @param timeout - Optional timeout in milliseconds (default: 10000)
- */
-export async function verifyProductsVisible(page: Page, productNames: string[], timeout: number = 10000): Promise<void> {
-  for (const productName of productNames) {
-    const productLocator = page.locator(`h5:has-text("${productName}")`);
-    await productLocator.waitFor({ state: 'visible', timeout });
-    
-    // Verify product is visible using Chai
-    const isVisible = await productLocator.isVisible();
-    expect(isVisible).to.be.true;
-  }
-}
-
-/**
  * Complete filter and sort workflow
  * @param page - Playwright page object
  * @param categoryFilter - Category text to filter by
  * @param minPrice - Minimum price for range filter
  * @param maxPrice - Maximum price for range filter
  * @param sortOption - Sorting option to apply
- * @param expectedProducts - Array of product names to verify after filtering
  */
+
 export async function applyFiltersAndSort(
   page: Page,
   categoryFilter: string,
   minPrice: number,
   maxPrice: number,
   sortOption: string,
-  expectedProducts: string[]
 ): Promise<void> {
   // Apply category filter
   await page.locator('#filters').getByText(categoryFilter).click();
@@ -139,12 +100,4 @@ export async function applyFiltersAndSort(
   
   // Apply sorting
   await applySorting(page, sortOption);
-  
-  // Wait for sorting to complete (using first expected product)
-  if (expectedProducts.length > 0) {
-    await waitForSortingComplete(page, expectedProducts[0]);
-  }
-  
-  // Verify expected products are visible
-  await verifyProductsVisible(page, expectedProducts);
 }

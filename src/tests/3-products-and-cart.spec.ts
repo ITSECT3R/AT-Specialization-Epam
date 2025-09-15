@@ -3,10 +3,10 @@ import { expect } from 'chai';
 import * as chai from 'chai';
 chai.should();
 import { assert } from 'chai';
-import { loginUser } from '../utils/login';
+import { loginUser } from '../utils/login.utils';
 import { HomePage } from '../po/home.page';
 import { ProductDetailPage } from '../po/product-detail.page';
-import { urls } from '../po';
+import { urls } from '../po/index.page';
 
 test.describe('Products Shop & Cart Testing', () => {
   

@@ -2,7 +2,7 @@ import { Page } from '@playwright/test';
 import { BasePage } from './base.page';
 import { HeaderComponent } from '../components/header.component';
 import { ProductCardComponent } from '../components/product-card.component';
-import { urls } from '.';
+import { urls } from './index.page';
 
 /**
  * ProductDetailPage - Uses BasePage + Components

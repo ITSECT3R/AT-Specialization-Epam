@@ -4,7 +4,7 @@ import * as chai from 'chai';
 chai.should();
 import { assert } from 'chai';
 import { LoginPage } from '../po/login.page';
-import { tools, urls } from '../po';
+import { tools, urls } from '../po/index.page';
 
 test.describe('Test Login', () => {
   test('User registration and login process', async ({ page }) => {

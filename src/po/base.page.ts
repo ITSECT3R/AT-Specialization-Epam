@@ -32,5 +32,9 @@ export class BasePage {
     await this.page.goto(url);
     await this.page.waitForLoadState('load');
   }
+
+  async getTitle(): Promise<string> {
+    return await this.page.title();
+  }
 }
 

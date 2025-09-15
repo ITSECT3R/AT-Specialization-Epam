@@ -1,5 +1,5 @@
 import { Page, expect } from '@playwright/test';
-import { urls } from '../po/index.ts';
+import { urls } from '../po/index.page.ts';
 import { RegisterPage } from '../po/register.page.ts';
 
 export interface RegistrationResult {
