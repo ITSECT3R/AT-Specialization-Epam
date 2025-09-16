@@ -4,47 +4,56 @@ import * as chai from 'chai';
 chai.should();
 import { assert } from 'chai';
 import { loginUser } from '../utils/login.utils';
+import { urls } from '../po/index.page';
+import { CheckoutPage } from '../po/checkout.page';
+import { ProductDetailPage } from '../po/product-detail.page';
+import { RegisterPage } from '../po/register.page';
+
 
 test.describe('Checkout', () => {
   test('Complete checkout process', async ({ page }) => {
+    const checkoutPage = new CheckoutPage(page);
+    const productDetailPage = new ProductDetailPage(page);
+    const registerPage = new RegisterPage(page);
+    const inputValues = registerPage.inputs();
 
     // Given I have Pilers products in my shopping cart
     // First, login to be able to complete checkout
     await loginUser(page);
 
     // Navigate to Combination Pliers product
-    await page.goto('/');
+    await checkoutPage.navigateTo(urls.home);
     await page.click('text=Combination Pliers');
-    await page.waitForURL(/.*\/product\/.*/);
+    await page.waitForURL(productDetailPage.products.productRegex);
     const productUrl = page.url();
 
-  assert.match(productUrl, /.*\/product\/.*/, 'Product URL should match');
-    
-    const productName = await page.locator('[data-test="product-name"]').textContent();
+    assert.match(productUrl, productDetailPage.products.productRegex, 'Product URL should match');
 
-  (productName as any).should.include('Combination Pliers');
+    const productName = await productDetailPage.productCard.getProductName();
+
+    (productName as any).should.include(productDetailPage.products.Combination_Pliers.name);
     
     // Add Pliers to cart
-    await page.click('[data-test="add-to-cart"]');
+    await productDetailPage.productCard.addToCart();
     await page.locator('[data-test="nav-cart"]').waitFor({ state: 'visible' });
 
     // Verify item was added to cart
-    const cartQuantityText = await page.locator('[data-test="cart-quantity"]').textContent();
-  // Using 'expect' style (keep one for variety)
-  expect(cartQuantityText).to.include('1');
+    const cartQuantityText = await page.locator(productDetailPage.productCard.cartQuantity).textContent();
+    // Using 'expect' style (keep one for variety)
+    expect(cartQuantityText).to.include('1');
     
     // When I proceed to checkout
     await page.click('[data-test="nav-cart"]');
     await page.waitForURL(/.*\/checkout/);
 
-  assert.match(page.url(), /.*\/checkout/, 'Checkout URL should match');
+    assert.match(page.url(), /.*\/checkout/, 'Checkout URL should match');
 
     // Verify Pliers product is in cart
-    const pliersCell = page.getByRole('cell', { name: 'Combination Pliers', exact: true });
+    const pliersCell = page.getByRole('cell', { name: productDetailPage.products.Combination_Pliers.name, exact: true });
     await pliersCell.waitFor({ state: 'visible' });
     const isPliersVisible = await pliersCell.isVisible();
 
-  (isPliersVisible as any).should.be.true;
+    (isPliersVisible as any).should.be.true;
     
     // Proceed to checkout step 1 (Sign in - already done)
     await page.click('[data-test="proceed-1"]');
@@ -52,32 +61,32 @@ test.describe('Checkout', () => {
     // Proceed to checkout step 2 (Address)
     await page.click('[data-test="proceed-2"]');
     await page.waitForURL(/.*\/checkout/);
-  // Using 'expect' style (keep one for variety)
-  expect(page.url()).to.match(/.*\/checkout/);
+    // Using 'expect' style (keep one for variety)
+    expect(page.url()).to.match(/.*\/checkout/);
 
     // And I fill in my billing and shipping information
-    await page.fill('[data-test="street"]', '123 Test Street');
-    await page.fill('[data-test="city"]', 'Test City');
-    await page.fill('[data-test="state"]', 'Test State');
-    await page.fill('[data-test="country"]', 'United States');
-    await page.fill('[data-test="postal_code"]', '12345');
-    
+    await page.fill(inputValues.street, '123 Test Street');
+    await page.fill(inputValues.city, 'Test City');
+    await page.fill(inputValues.state, 'Test State');
+    await page.fill(inputValues.country, 'United States');
+    await page.fill(inputValues.postalCode, '12345');
+
     // Proceed to checkout step 3 (Payment)
     await page.click('[data-test="proceed-3"]');
     await page.waitForURL(/.*\/checkout/);
 
-  assert.match(page.url(), /.*\/checkout/, 'Checkout URL should match');
+    assert.match(page.url(), /.*\/checkout/, 'Checkout URL should match');
 
     // And I select a payment method
     
     // Select Bank Transfer payment method
 
-    await page.locator('[data-test="payment-method"]').selectOption('bank-transfer');
-    await page.locator('[data-test="bank_name"]').fill('Bank of America');
-    await page.locator('[data-test="account_name"]').fill('Christofer Hopkins');
-    await page.locator('[data-test="account_number"]').fill('123456789');
-    await page.locator('[data-test="finish"]').click();
-    
+    await page.locator(checkoutPage.paymentInputs['payment Method']).selectOption(checkoutPage.paymentData.method);
+    await page.locator(checkoutPage.paymentInputs['bank Name']).fill(checkoutPage.paymentData.bankName);
+    await page.locator(checkoutPage.paymentInputs['account Name']).fill(checkoutPage.paymentData.accountName);
+    await page.locator(checkoutPage.paymentInputs['account Number']).fill(checkoutPage.paymentData.accountNumber);
+    await page.locator(checkoutPage.paymentInputs['finish Btn']).click();
+
     const paymentSuccessMessage = page.locator('div').filter({ hasText: /^Payment was successful$/ }).first();
     await paymentSuccessMessage.waitFor({ state: 'visible' });
     const isPaymentSuccessVisible = await paymentSuccessMessage.isVisible();

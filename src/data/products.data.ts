@@ -5,4 +5,6 @@ export const expectedProducts = {
   swissWoodcarvingChisels: 'Swiss Woodcarving Chisels',
   adjustableWrench: 'Adjustable Wrench',
   clawHammer: 'Claw Hammer with Fiberglass Handle'
-}
+};
+
+

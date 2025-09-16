@@ -3,20 +3,20 @@ import { BasePage } from './base.page';
 import { HeaderComponent } from '../components/header.component';
 import { ProductCardComponent } from '../components/product-card.component';
 import { urls } from './index.page';
-import { FiltersAndSearchComponent } from '../components/filters&search.component';
+import { SearchComponent } from '../components/search.component';
 import { StoreComponent } from '../components/store.component';
 
 export class HomePage extends BasePage {
   public readonly header: HeaderComponent;
   public readonly productCard: ProductCardComponent;
-  public readonly filters: FiltersAndSearchComponent;
+  public readonly filters: SearchComponent;
   public readonly store: StoreComponent;
   
   constructor(page: Page) {
     super(page);
     this.header = new HeaderComponent(page);
     this.productCard = new ProductCardComponent(page);
-    this.filters = new FiltersAndSearchComponent(page);
+    this.filters = new SearchComponent(page);
     this.store = new StoreComponent(page);
   }
 

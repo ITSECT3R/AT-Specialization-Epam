@@ -1,5 +1,4 @@
 import { Page } from "@playwright/test";
-import { expect } from "chai";
 
 export class StoreComponent {
   private page: Page;

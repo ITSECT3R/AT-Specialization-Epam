@@ -26,7 +26,7 @@ export class ProductCardComponent {
   }
 
   async getProductName(): Promise<string> {
-    await this.page.locator(this.productName).waitFor({ state: 'visible' });
+    await this.page.locator(this.productName).waitFor({ state: 'visible', timeout: 15000 });
     return await this.page.locator(this.productName).textContent() || '';
   }
 

@@ -1,6 +1,6 @@
 import { Page } from '@playwright/test';
 
-export class FiltersAndSearchComponent {
+export class SearchComponent {
   private page: Page;
 
   public searchInput = '[data-test="search-query"]';

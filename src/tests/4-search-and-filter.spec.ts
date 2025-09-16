@@ -68,7 +68,7 @@ test.describe('Search & Filter', () => {
       'Hand Tools',           // Category filter
       19,                     // Min price
       45,                     // Max price  
-      'Price (High - Low)',   // Sort option    // Expected products to verify
+      'Price (High - Low)',   // Sort option
     );
     
     // Then I should see the filtered and sorted products displayed correctly
