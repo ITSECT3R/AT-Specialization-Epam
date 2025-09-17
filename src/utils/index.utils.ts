@@ -3,12 +3,9 @@ import { loginUser } from './login.utils.ts'
 import { registerUser } from './register.utils.ts'
 import { applyFiltersAndSort } from './filter.utils.ts'
 
-
-export function utils() {
-  return {
+export {
+    applyFiltersAndSort,
     getTestUser,
     loginUser,
     registerUser,
-    applyFiltersAndSort
-  }
 }

@@ -1,7 +1,7 @@
 import { expect, Page } from '@playwright/test';
-import { getTestUser } from './get-user.utils';
-import { LoginPage } from '../po/login.page';
-import { urls } from '../po/index.page';
+import { getTestUser } from '../utils/index.utils';
+import { pages } from '../po/index.page';
+import { urls } from '../data/index.data';
 
 interface User {
   email: string;
@@ -9,15 +9,14 @@ interface User {
 }
 
 async function attemptLogin(page: Page, user: User) {
-  const login = new LoginPage(page);
+  const { loginPage } = pages(page);
+  
   console.log(`🔑 Attempting login for user: ${user.email}`);
 
-  await login.navigateTo(urls.login);
-  await login.waitForLoad();
+  await loginPage.navigateTo(urls.login);
+  await loginPage.waitForLoad();
 
-  await page.fill(login.enterLogin().emailInput, user.email);
-  await page.fill(login.enterLogin().passwordInput, user.password);
-  await login.clickElement(login.enterLogin().submitBtn);
+  await loginPage.login(user.email, user.password);
 
   await expect(page).toHaveURL(urls.account, { timeout: 10000 });
   console.log(`✅ Login successful for user: ${user.email}`);
@@ -31,6 +30,7 @@ export async function loginUser(page: Page, user?: any) {
     // First attempt: try to login
     await attemptLogin(page, testUser);
     return testUser;
+
   } catch (error) {
     console.log(`❌ Login failed for user: ${testUser.email}, will try registration`);
     

@@ -10,7 +10,7 @@ import { expect } from 'chai';
  * @param page - Playwright page object
  * @param categoryText - The text to filter the category list by
  */
-export async function selectAllCategoryCheckboxes(page: Page, categoryText: string): Promise<void> {
+async function selectAllCategoryCheckboxes(page: Page, categoryText: string): Promise<void> {
   // Find the category list and select all checkboxes within it
   const categoryList = page.getByRole('list').filter({ hasText: categoryText });
   const checkboxes = categoryList.locator('input[type="checkbox"]');
@@ -33,7 +33,7 @@ export async function selectAllCategoryCheckboxes(page: Page, categoryText: stri
  * @param minPrice - Target minimum price (0-100 range)
  * @param maxPrice - Target maximum price (0-100 range)
  */
-export async function setPriceRangeSlider(page: Page, minPrice: number, maxPrice: number): Promise<void> {
+async function setPriceRangeSlider(page: Page, minPrice: number, maxPrice: number): Promise<void> {
   // Get the slider elements
   const minSlider = page.locator('.ngx-slider-pointer-min');
   const maxSlider = page.locator('.ngx-slider-pointer-max');
@@ -69,7 +69,7 @@ export async function setPriceRangeSlider(page: Page, minPrice: number, maxPrice
  * @param page - Playwright page object
  * @param sortOption - The sorting option to select (e.g., 'Price (High - Low)')
  */
-export async function applySorting(page: Page, sortOption: string): Promise<void> {
+async function applySorting(page: Page, sortOption: string): Promise<void> {
   await page.locator('[data-test="sort"]').selectOption({ label: sortOption });
 }
 

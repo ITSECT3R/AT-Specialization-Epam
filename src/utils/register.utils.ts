@@ -1,6 +1,6 @@
 import { Page, expect } from '@playwright/test';
-import { urls } from '../po/index.page.ts';
-import { RegisterPage } from '../po/register.page.ts';
+import { urls, personalDataInputs } from '../data/index.data';
+import { pages } from '../po/index.page';
 
 export interface RegistrationResult {
   success: boolean;
@@ -16,15 +16,16 @@ export interface RegistrationResult {
  */
 
 export async function registerUser(page: Page, user: any): Promise<RegistrationResult> {
+  const { registerPage } =  pages(page);
+  const inputs = personalDataInputs;
+
   try {
-    const register = new RegisterPage(page);
     console.log(`🔄 Starting registration for user: ${user.email}`);
 
     // Navigate to registration page
-    await register.navigateTo(urls.register);
+    await registerPage.navigateTo(urls.register);
 
     // Fill registration form using inputs from register.page.ts
-    const inputs = register.inputs();
     await page.fill(inputs.firstName, user.firstName);
     await page.fill(inputs.lastName, user.lastName);
     await page.fill(inputs.dob, user.dob);
@@ -38,7 +39,7 @@ export async function registerUser(page: Page, user: any): Promise<RegistrationR
     await page.fill(inputs.password, user.password);
     
     // Submit registration
-    await register.clickElement(inputs.registerButton);
+    await page.click(registerPage.registerButton);
     
     // Wait for registration success (redirect to login page)
     await expect(page).toHaveURL(urls.login, { timeout: 15000 });

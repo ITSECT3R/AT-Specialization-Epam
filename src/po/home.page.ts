@@ -2,9 +2,9 @@ import { Page } from '@playwright/test';
 import { BasePage } from './base.page';
 import { HeaderComponent } from '../components/header.component';
 import { ProductCardComponent } from '../components/product-card.component';
-import { urls } from './index.page';
 import { SearchComponent } from '../components/search.component';
 import { StoreComponent } from '../components/store.component';
+import { urls } from '../data/index.data';
 
 export class HomePage extends BasePage {
   public readonly header: HeaderComponent;
@@ -22,11 +22,11 @@ export class HomePage extends BasePage {
 
   async selectProduct(productText: string, productUrl: string | RegExp): Promise<void> {
     await this.productCard.clickProductByText(productText);
-    await this.waitForUrl(productUrl);
+    await this.page.waitForURL(productUrl);
   }
 
   async verifyHomePage(): Promise<boolean> {
-    return this.getCurrentUrl() === urls.home; 
+    return await this.getCurrentUrl() === urls.home; 
   }
 }
 

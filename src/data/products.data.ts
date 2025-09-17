@@ -1,5 +1,3 @@
-
-
 export const expectedProducts = {
   spannersSet: 'Open-end Spanners (Set)',
   swissWoodcarvingChisels: 'Swiss Woodcarving Chisels',

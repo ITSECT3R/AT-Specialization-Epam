@@ -7,21 +7,12 @@ export class BasePage {
     this.page = page;
   }
 
-  async waitForUrl(url: string | RegExp): Promise<void> {
-    await this.page.waitForURL(url);
-  }
-
   async waitForLoad(): Promise<void> {
     await this.page.waitForLoadState('load');
   }
 
-  getCurrentUrl(): string {
+  async getCurrentUrl(): Promise<string> {
     return this.page.url();
-  }
-
-  // New reusable methods needed for profile (and potentially other pages)
-  async clickElement(selector: string): Promise<void> {
-    await this.page.click(selector);
   }
 
   async getInputValue(selector: string): Promise<string> {
@@ -31,10 +22,6 @@ export class BasePage {
   async navigateTo(url: string): Promise<void> {
     await this.page.goto(url);
     await this.page.waitForLoadState('load');
-  }
-
-  async getTitle(): Promise<string> {
-    return await this.page.title();
   }
 }
 

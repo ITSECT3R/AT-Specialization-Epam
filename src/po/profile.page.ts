@@ -1,6 +1,6 @@
 import { Page } from '@playwright/test';
 import { BasePage } from './base.page';
-import { urls } from './index.page';
+import { urls } from '../data/index.data';
 
 export class ProfilePage extends BasePage {
   private readonly navMenu = '[data-test="nav-menu"]';
@@ -15,9 +15,9 @@ export class ProfilePage extends BasePage {
   }
 
   async navigateToProfile(): Promise<void> {
-    await this.clickElement(this.navMenu);
-    await this.clickElement(this.navMyProfile);
-    await this.waitForUrl(urls.profile);
+    await this.page.click(this.navMenu);
+    await this.page.click(this.navMyProfile);
+    await this.page.waitForURL(urls.profile);
   }
 
   async updatePersonalInfo(firstName: string, lastName: string, phone: string): Promise<void> {
@@ -28,7 +28,7 @@ export class ProfilePage extends BasePage {
 
   async clickSave(): Promise<void> {
     await this.page.waitForSelector(this.saveButton, { state: 'visible' });
-    await this.clickElement(this.saveButton);
+    await this.page.click(this.saveButton);
   }
 
   async getPersonalInfoValues(): Promise<{ firstName: string; lastName: string; phone: string; }> {

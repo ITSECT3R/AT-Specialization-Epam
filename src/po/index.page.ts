@@ -1,26 +1,32 @@
 import { Page } from "@playwright/test";
-import { LoginPage } from "./login.page.ts";
+import { CheckoutPage } from "./checkout.page.ts";
 import { HomePage } from "./home.page.ts";
+import { LoginPage } from "./login.page.ts";
+import { ProductDetailPage } from "./product-detail.page.ts";
+import { ProfilePage } from "./profile.page.ts";
 import { RegisterPage } from "./register.page.ts";
-import { utils } from "../utils/index.utils.ts";
 
-export function pages(page: Page): { [key: string]: LoginPage | HomePage | RegisterPage } {
-  return {
-    login: new LoginPage(page),
-    home: new HomePage(page),
-    register: new RegisterPage(page)
-  };
+/**
+ * Page Object Factory - Creates instances of all page objects
+ * This provides a clean, centralized way to instantiate page objects in tests
+ */
+export interface PageObjects {
+  checkoutPage: CheckoutPage;
+  homePage: HomePage;
+  loginPage: LoginPage;
+  productDetailPage: ProductDetailPage;
+  profilePage: ProfilePage;
+  registerPage: RegisterPage;
 }
 
-export const urls = {
-  home: 'https://practicesoftwaretesting.com/',
-  login: 'https://practicesoftwaretesting.com/auth/login',
-  profile: 'https://practicesoftwaretesting.com/account/profile',
-  register: 'https://practicesoftwaretesting.com/auth/register',
-  account: 'https://practicesoftwaretesting.com/account',
-  checkout: 'https://practicesoftwaretesting.com/checkout',
-};
-
-export const tools = utils();
-
+export function pages(page: Page): PageObjects {
+  return {
+    checkoutPage: new CheckoutPage(page),
+    homePage: new HomePage(page),
+    loginPage: new LoginPage(page),
+    productDetailPage: new ProductDetailPage(page),
+    profilePage: new ProfilePage(page),
+    registerPage: new RegisterPage(page)
+  };
+}
 

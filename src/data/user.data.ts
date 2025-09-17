@@ -13,3 +13,9 @@ export const newUser = {
   country: "Mexico",
   phone: "1234567890",
 };
+
+export const updateUserInfo = {
+  name: 'Christopher',
+  lastName: 'Hoppkins',
+  phone: '9876543210'
+};

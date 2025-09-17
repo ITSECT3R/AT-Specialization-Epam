@@ -4,18 +4,14 @@ import * as chai from 'chai';
 chai.should();
 import { assert } from 'chai';
 import { loginUser } from '../utils/login.utils';
-import { urls } from '../po/index.page';
-import { CheckoutPage } from '../po/checkout.page';
-import { ProductDetailPage } from '../po/product-detail.page';
-import { RegisterPage } from '../po/register.page';
+import { pages } from '../po/index.page';
+import { urls } from '../data/index.data';
+import { personalDataInputs } from '../data/inputs.data';
 
 
 test.describe('Checkout', () => {
   test('Complete checkout process', async ({ page }) => {
-    const checkoutPage = new CheckoutPage(page);
-    const productDetailPage = new ProductDetailPage(page);
-    const registerPage = new RegisterPage(page);
-    const inputValues = registerPage.inputs();
+    const { checkoutPage, productDetailPage, registerPage } = pages(page);
 
     // Given I have Pilers products in my shopping cart
     // First, login to be able to complete checkout
@@ -65,11 +61,11 @@ test.describe('Checkout', () => {
     expect(page.url()).to.match(/.*\/checkout/);
 
     // And I fill in my billing and shipping information
-    await page.fill(inputValues.street, '123 Test Street');
-    await page.fill(inputValues.city, 'Test City');
-    await page.fill(inputValues.state, 'Test State');
-    await page.fill(inputValues.country, 'United States');
-    await page.fill(inputValues.postalCode, '12345');
+    await page.fill(personalDataInputs.street, '123 Test Street');
+    await page.fill(personalDataInputs.city, 'Test City');
+    await page.fill(personalDataInputs.state, 'Test State');
+    await page.fill(personalDataInputs.country, 'United States');
+    await page.fill(personalDataInputs.postalCode, '12345');
 
     // Proceed to checkout step 3 (Payment)
     await page.click('[data-test="proceed-3"]');
