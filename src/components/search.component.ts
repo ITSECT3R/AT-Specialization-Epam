@@ -14,7 +14,4 @@ export class SearchComponent {
   constructor(page: Page) {
     this.page = page;
   }
-
-
-
 }

@@ -15,9 +15,7 @@ test.describe('Profile', () => {
     await loginUser(page);
     
     // When I navigate to my profile page using ProfilePage
-    await profilePage.navigateTo(urls.profile);
-
-    await profilePage.clickSave()
+    await profilePage.header.navMenuTo('profile')
     
     // Verify we're on profile page using ProfilePage method
     assert.equal(await profilePage.getCurrentUrl(), urls.profile, 'URL should match profile page');

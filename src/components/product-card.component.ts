@@ -12,17 +12,11 @@ export class ProductCardComponent {
   private readonly productDescription = '[data-test="product-description"]';
   private readonly addToCartButton = '[data-test="add-to-cart"]';
   private readonly addToFavoritesButton = '[data-test="add-to-favorites"]';
-  public quantity = '[data-test="quantity"]';
-  public cartQuantity = '[data-test="cart-quantity"]';
-  public navCart = '[data-test="nav-cart"]';
+  private readonly quantity = '[data-test="quantity"]';
   public cartTotal = '[data-test="cart-total"]';
 
   constructor(page: Page) {
     this.page = page;
-  }
-
-  async clickProductByText(productText: string): Promise<void> {
-    await this.page.click(`text=${productText}`);
   }
 
   async getProductName(): Promise<string> {

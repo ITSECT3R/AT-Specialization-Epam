@@ -1,12 +1,9 @@
 import { Page } from '@playwright/test';
 import { BasePage } from './base.page';
-import { urls, personalDataInputs  } from '../data/index.data';
+import { personalDataInputs  } from '../data/index.data';
 
 export class LoginPage extends BasePage {
-  private readonly navMenu = '[data-test="nav-menu"]';
-
   private readonly loginButton = '[data-test="login-submit"]';
-
   private readonly successMessage = '[data-test="success-message"]';
   private readonly errorMessage = '[data-test="error-message"]';
 
@@ -21,13 +18,8 @@ export class LoginPage extends BasePage {
   }
 
   async getNavMenuText(): Promise<string> {
-    const navMenu = this.page.locator(this.navMenu);
+    const navMenu = this.page.locator(this.header.navHeaderBtns.menu);
     await navMenu.waitFor({ state: 'visible' });
     return await navMenu.textContent() || '';
-  }
-
-  async verifyAccountUrl(): Promise<boolean> {
-    const url = await this.getCurrentUrl();
-    return url.match(urls.account) !== null;
   }
 }

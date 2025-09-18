@@ -1,7 +1,7 @@
 import { Page } from '@playwright/test';
 
 // Type definitions for header navigation
-export type NavHeaderButton = 'home' | 'categories' | 'contact' | 'navMenu' | 'language' | 'navCart' | 'cartQuantity';
+export type NavHeaderButton = 'home' | 'categories' | 'contact' | 'menu' | 'language' | 'cart' | 'cartQuantity';
 export type NavMenuButton = 'account' | 'favorites' | 'profile' | 'invoices' | 'messages' | 'signOut';
 
 /**
@@ -12,17 +12,17 @@ export class HeaderComponent {
   private page: Page;
   
   // Header selectors
-  private readonly navHeaderBtns: Record<NavHeaderButton, string> = {
+  public readonly navHeaderBtns: Record<NavHeaderButton, string> = {
     home: '[data-test="nav-home"]',
     categories: '[data-test="nav-categories"]',
     contact: '[data-test="nav-contact"]',
-    navMenu: '[data-test="nav-menu"]',
+    menu: '[data-test="nav-menu"]',
     language: '[data-test="language-select"]',
-    navCart: '[data-test="nav-cart"]',
+    cart: '[data-test="nav-cart"]',
     cartQuantity: '[data-test="cart-quantity"]'
   }
 
-  private readonly navMenuBtns: Record<NavMenuButton, string> = {
+  public readonly navMenuBtns: Record<NavMenuButton, string> = {
     account: '[data-test="nav-my-account"]',
     favorites: '[data-test="nav-my-favorites"]',
     profile: '[data-test="nav-my-profile"]',
@@ -35,34 +35,17 @@ export class HeaderComponent {
     this.page = page;
   }
 
-  async clickNavMenu(btn: NavMenuButton): Promise<void> {
+  async navMenuTo(btn: NavMenuButton): Promise<void> {
+    await this.page.click(this.navHeaderBtns.menu);
     await this.page.click(this.navMenuBtns[btn]);
+    await this.page.waitForLoadState('load');
   }
 
   async clickHeaderButton(btn: NavHeaderButton): Promise<void> {
     await this.page.click(this.navHeaderBtns[btn]);
   }
 
-  async openNavMenu(): Promise<void> {
-    await this.page.click(this.navHeaderBtns.navMenu);
-  }
-
-  async clickCart(): Promise<void> {
-    await this.page.waitForSelector(this.navHeaderBtns.navCart, { state: 'visible' });
-    await this.page.click(this.navHeaderBtns.navCart);
-  }
-
   async getCartQuantity(): Promise<string> {
     return await this.page.locator(this.navHeaderBtns.cartQuantity).textContent() || '';
-  }
-
-  async getNavMenuText(): Promise<string> {
-    await this.page.locator(this.navHeaderBtns.navMenu).waitFor({ state: 'visible' });
-    return await this.page.locator(this.navHeaderBtns.navMenu).textContent() || '';
-  }
-
-  async navigateToProfile(): Promise<void> {
-    await this.openNavMenu();
-    await this.clickNavMenu('profile');
   }
 }
