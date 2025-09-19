@@ -1,31 +1,33 @@
-import { Page } from '@playwright/test';
+import { Page, Locator } from '@playwright/test';
 import { BasePage } from './base.page';
-import { personalDataInputs } from '../data/index.data';
+import { createPersonalDataLocators } from '../data/index.data';
 
 export class ProfilePage extends BasePage {
-  private readonly phoneInput = '[data-test="phone"]';
-  private readonly saveButton = '[data-test="update-profile-submit"]';
+  public readonly inputs: ReturnType<typeof createPersonalDataLocators>;
+  public readonly saveButton: Locator;
 
   constructor(page: Page) {
     super(page);
+    this.inputs = createPersonalDataLocators(this.page);
+    this.saveButton = this.page.locator('[data-test="update-profile-submit"]');
   }
 
   async updatePersonalInfo(firstName: string, lastName: string, phone: string): Promise<void> {
-    await this.page.fill(personalDataInputs.firstName, firstName);
-    await this.page.fill(personalDataInputs.lastName, lastName);
-    await this.page.fill(this.phoneInput, phone);
+    await this.inputs.firstName.fill(firstName);
+    await this.inputs.lastName.fill(lastName);
+    await this.inputs.phone.fill(phone);
   }
   
   async getPersonalInfoValues(): Promise<{ firstName: string; lastName: string; phone: string; }> {
     return {
-      firstName: await this.getInputValue(personalDataInputs.firstName),
-      lastName: await this.getInputValue(personalDataInputs.lastName),
-      phone: await this.getInputValue(this.phoneInput)
+      firstName: await this.inputs.firstName.inputValue(),
+      lastName: await this.inputs.lastName.inputValue(),
+      phone: await this.inputs.phone.inputValue()
     };
   }
 
   async clickSave(): Promise<void> {
-    await this.page.waitForSelector(this.saveButton, { state: 'visible' });
-    await this.page.click(this.saveButton);
+    await this.saveButton.waitFor({ state: 'visible' });
+    await this.saveButton.click();
   }
 }

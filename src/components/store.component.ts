@@ -1,10 +1,9 @@
 import { Page } from "@playwright/test";
+import { BaseComponent } from "./base.component";
 
-export class StoreComponent {
-  private page: Page;
-
+export class StoreComponent extends BaseComponent {
   constructor(page: Page) {
-    this.page = page;
+    super(page);
   }
 
   async selectProduct(productText: string, productUrl: string | RegExp): Promise<void> {

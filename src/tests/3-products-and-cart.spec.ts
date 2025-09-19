@@ -48,11 +48,11 @@ test.describe('Products Shop & Cart Testing', () => {
 
   test('Add Thor Hammer to shopping cart', async ({ page }) => {
     // Given I am viewing the Thor Hammer details page
-    const { homePage, productDetailPage } = pages(page);
+    const { homePage, productDetailPage, checkoutPage } = pages(page);
 
     await homePage.navigateTo(urls.home);
-    await page.click('text=Thor Hammer $11.14');
-    await page.waitForURL(products.productRegex);
+    await homePage.clickByText('Thor Hammer $11.14');
+    await homePage.waitForUrl(products.productRegex);
 
     assert.match(await homePage.getCurrentUrl(), products.productRegex, 'Should be on product page');
 
@@ -69,31 +69,31 @@ test.describe('Products Shop & Cart Testing', () => {
     await productDetailPage.productCard.addToCart();
 
     // Wait for cart to update - look for cart quantity or success message first
-    await page.waitForSelector(productDetailPage.header.navHeaderBtns.cartQuantity, { state: 'visible', timeout: 15000 });
+    await productDetailPage.header.navHeaderBtns.cartQuantity.waitFor({ state: 'visible', timeout: 15000 });
 
     // Verify item was added (optional step)
-    const cartQuantityText = await page.locator(productDetailPage.header.navHeaderBtns.cartQuantity).textContent();
+    const cartQuantityText = await productDetailPage.header.getCartQuantity();
   
     (cartQuantityText as any).should.include('1');
     
     // And I navigate to the shopping cart page
-    await page.click(productDetailPage.header.navHeaderBtns.cart);
-    await page.waitForURL(urls.checkout);
-    const checkoutUrl = await productDetailPage.getCurrentUrl();
+    await productDetailPage.header.clickHeaderButton('cart');
+    await checkoutPage.waitForUrl(urls.checkout);
+    const checkoutUrl = await checkoutPage.getCurrentUrl();
 
     assert.equal(checkoutUrl, urls.checkout, 'Should be on checkout page');
 
     // Then I should see the Thor Hammer product in my cart with correct quantity of "1" and price "$11.14"
-    const thorHammerCell = page.getByRole('cell', { name: products.Thor_Hammer.name, exact: true });
+    const thorHammerCell = await checkoutPage.findCellByText('cell', products.Thor_Hammer.name);
     const thorHammerText = await thorHammerCell.textContent();
   
     (thorHammerText as any).should.include(products.Thor_Hammer.name);
 
-    const cartQuantity = await page.locator(productDetailPage.header.navHeaderBtns.cartQuantity).textContent();
+    const cartQuantity = await productDetailPage.header.getCartQuantity();
 
     assert.include(cartQuantity, '1', 'Cart quantity should be 1');
 
-    const cartTotal = await page.locator(productDetailPage.productCard.cartTotal).textContent();
+    const cartTotal = await productDetailPage.productCard.cartTotal.textContent();
 
     (cartTotal as any).should.include('$11.14');
   });
@@ -105,9 +105,9 @@ test.describe('Products Shop & Cart Testing', () => {
     
     // Navigate to Long Nose Pilers product
     await homePage.navigateTo(urls.home);
-    await page.getByRole('link', { name: 'Long Nose Pliers Long Nose Pliers Out of stock $14.24' }).click();
-    await page.waitForURL(products.productRegex);
-    const productUrl = page.url();
+    const pilersCell = await homePage.findCellByText('link', /Long Nose Pliers.*Out of stock/);
+    await pilersCell.click();
+    const productUrl = await homePage.getCurrentUrl();
 
     assert.match(productUrl, products.productRegex, 'Should be on product page');
 
@@ -120,9 +120,7 @@ test.describe('Products Shop & Cart Testing', () => {
     
     // Then I should see visual feedback that the product was added to favorites
     // Since we're logged in, it should successfully add to favorites
-    const favoritesMessage = page.locator('div').filter({ hasText: 'Product added to your' }).nth(2);
-    await favoritesMessage.waitFor({ state: 'visible' });
-    const messageText = await favoritesMessage.textContent();
+    const messageText = await productDetailPage.getFavoritesMessage();
   
     assert.include(messageText, "Product added to your favorites list.", 'Should show favorites message');
   });

@@ -1,5 +1,5 @@
 import { Page, expect } from '@playwright/test';
-import { urls, personalDataInputs } from '../data/index.data';
+import { urls } from '../data/index.data';
 import { pages } from '../po/index.page';
 
 export interface RegistrationResult {
@@ -17,7 +17,6 @@ export interface RegistrationResult {
 
 export async function registerUser(page: Page, user: any): Promise<RegistrationResult> {
   const { registerPage } =  pages(page);
-  const inputs = personalDataInputs;
 
   try {
     console.log(`🔄 Starting registration for user: ${user.email}`);
@@ -26,21 +25,21 @@ export async function registerUser(page: Page, user: any): Promise<RegistrationR
     await registerPage.navigateTo(urls.register);
 
     // Fill registration form using inputs from register.page.ts
-    await page.fill(inputs.firstName, user.firstName);
-    await page.fill(inputs.lastName, user.lastName);
-    await page.fill(inputs.dob, user.dob);
-    await page.fill(inputs.street, user.street);
-    await page.fill(inputs.postalCode, user.postalCode);
-    await page.fill(inputs.city, user.city);
-    await page.fill(inputs.state, user.state);
-    await page.selectOption(inputs.country, { label: user.country });
-    await page.fill(inputs.phone, user.phone);
-    await page.fill(inputs.email, user.email);
-    await page.fill(inputs.password, user.password);
+    await registerPage.inputs.firstName.fill(user.firstName);
+    await registerPage.inputs.lastName.fill(user.lastName);
+    await registerPage.inputs.dob.fill(user.dob);
+    await registerPage.inputs.street.fill(user.street);
+    await registerPage.inputs.postalCode.fill(user.postalCode);
+    await registerPage.inputs.city.fill(user.city);
+    await registerPage.inputs.state.fill(user.state);
+    await registerPage.inputs.country.selectOption({ label: user.country });
+    await registerPage.inputs.phone.fill(user.phone);
+    await registerPage.inputs.email.fill(user.email);
+    await registerPage.inputs.password.fill(user.password);
     
     // Submit registration
-    await page.click(registerPage.registerButton);
-    
+    await registerPage.registerButton.click();
+
     // Wait for registration success (redirect to login page)
     await expect(page).toHaveURL(urls.login, { timeout: 15000 });
     

@@ -20,34 +20,34 @@ test.describe('Search & Filter', () => {
     assert.match(pageTitle, /Practice Software Testing/, 'Page title should match');
     
     // When I enter "hammer" in the search box
-    await page.fill(homePage.search.searchInput, 'hammer');
+    await homePage.search.searchInput.fill('hammer');
     
     // And I click the search button or press Enter
-    await page.click(homePage.search.searchButton);
+    await homePage.search.searchButton.click();
 
     // And I review the search results
-    const searchCaption = page.locator(homePage.search.searchCaption);
+    const searchCaption = homePage.search.searchCaption;
     await searchCaption.waitFor({ state: 'visible' });
     const isCaptionVisible = await searchCaption.isVisible();
     (isCaptionVisible as any).should.be.true;
 
-    const searchedForHeader = page.locator(homePage.search.hammerHeader);
+    const searchedForHeader = homePage.search.hammerHeader
     await searchedForHeader.waitFor({ state: 'visible' });
     const isHeaderVisible = await searchedForHeader.isVisible();
 
     expect(isHeaderVisible).to.be.true;
     
     // Then I should see products related to "hammer" displayed in the results
-    const searchTermText = await page.locator(homePage.search.searchTerm).textContent();
+    const searchTermText = await homePage.search.searchTerm.textContent();
     assert.equal(searchTermText, 'hammer', 'Search term should be hammer');
 
     // Verify Thor Hammer appears in search results
-    const thorHammer = page.locator(homePage.search.thorHammer);
+    const thorHammer = homePage.search.thorHammer;
     await thorHammer.waitFor({ state: 'visible' });
     await thorHammer.isVisible();
 
     // Verify search results contain relevant products
-    const searchCompleted = await page.locator(homePage.search.searchCompleted).textContent();
+    const searchCompleted = await homePage.search.searchCompleted.textContent();
     expect(searchCompleted).to.match(/hammer/i);
   });
 

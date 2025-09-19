@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test';
+import { Page, Locator } from '@playwright/test';
 import { HeaderComponent, ProductCardComponent, SearchComponent, StoreComponent } from '../components/index.components';
 
 export class BasePage {
@@ -59,6 +59,18 @@ export class BasePage {
   async navigateTo(url: string): Promise<void> {
     await this.page.goto(url);
     await this.waitForLoad();
+  }
+
+  async clickByText(text: string): Promise<void> {
+    await this.page.click(`text=${text}`);
+  }
+
+  async findCellByText(role: 'link' | 'cell', text: string | RegExp): Promise<Locator> {
+    return this.page.getByRole(role, { name: text, exact: true });
+  }
+
+  async waitForUrl(urlOrRegex: string | RegExp): Promise<void> {
+    await this.page.waitForURL(urlOrRegex);
   }
 }
 

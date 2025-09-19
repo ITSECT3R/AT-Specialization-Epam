@@ -18,4 +18,10 @@ export class ProductDetailPage extends BasePage {
       text: await relatedProduct.textContent() || ''
     };
   }
+
+  async getFavoritesMessage(): Promise<string> {
+    const favoritesMessage = this.page.locator('div').filter({ hasText: 'Product added to your' }).nth(2);
+    await favoritesMessage.waitFor({ state: 'visible' });
+    return await favoritesMessage.textContent() || '';
+  }
 }

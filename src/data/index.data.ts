@@ -1,10 +1,10 @@
 import { urls } from './urls.data';
-import { personalDataInputs } from './inputs.data';
+import { createPersonalDataLocators } from './inputs.data';
 import { products, expectedProducts } from './products.data';
 import { newUser, updateUserInfo } from './user.data';
 
 export {
-  personalDataInputs,
+  createPersonalDataLocators,
   expectedProducts,
   products,
   urls,
