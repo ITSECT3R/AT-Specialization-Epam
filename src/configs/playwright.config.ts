@@ -12,7 +12,7 @@ import { defineConfig, devices } from '@playwright/test';
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: './tests',
+  testDir: '../tests',
   /* Global timeout for each test */
   timeout: 60000,
   /* Global timeout for expect() assertions */
@@ -29,7 +29,7 @@ export default defineConfig({
   workers: 1, // Set to 1 to ensure sequential execution
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
 
-  reporter: [['html', { open: 'never' }]],
+  reporter: [['html', { outputFolder: '../../playwright-report', open: 'never' }]],
 
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {

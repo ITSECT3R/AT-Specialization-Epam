@@ -10,7 +10,7 @@ import { expect } from 'chai';
  * @param page - Playwright page object
  * @param categoryText - The text to filter the category list by
  */
-export async function selectAllCategoryCheckboxes(page: Page, categoryText: string): Promise<void> {
+async function selectAllCategoryCheckboxes(page: Page, categoryText: string): Promise<void> {
   // Find the category list and select all checkboxes within it
   const categoryList = page.getByRole('list').filter({ hasText: categoryText });
   const checkboxes = categoryList.locator('input[type="checkbox"]');
@@ -33,7 +33,7 @@ export async function selectAllCategoryCheckboxes(page: Page, categoryText: stri
  * @param minPrice - Target minimum price (0-100 range)
  * @param maxPrice - Target maximum price (0-100 range)
  */
-export async function setPriceRangeSlider(page: Page, minPrice: number, maxPrice: number): Promise<void> {
+async function setPriceRangeSlider(page: Page, minPrice: number, maxPrice: number): Promise<void> {
   // Get the slider elements
   const minSlider = page.locator('.ngx-slider-pointer-min');
   const maxSlider = page.locator('.ngx-slider-pointer-max');
@@ -41,12 +41,6 @@ export async function setPriceRangeSlider(page: Page, minPrice: number, maxPrice
   // Wait for sliders to be visible
   await minSlider.waitFor({ state: 'visible' });
   await maxSlider.waitFor({ state: 'visible' });
-  
-  // Verify sliders are visible using Chai
-  const minSliderVisible = await minSlider.isVisible();
-  const maxSliderVisible = await maxSlider.isVisible();
-  expect(minSliderVisible).to.be.true;
-  expect(maxSliderVisible).to.be.true;
   
   // Set minimum price (assuming slider starts at 0)
   if (minPrice > 0) {
@@ -75,40 +69,8 @@ export async function setPriceRangeSlider(page: Page, minPrice: number, maxPrice
  * @param page - Playwright page object
  * @param sortOption - The sorting option to select (e.g., 'Price (High - Low)')
  */
-export async function applySorting(page: Page, sortOption: string): Promise<void> {
+async function applySorting(page: Page, sortOption: string): Promise<void> {
   await page.locator('[data-test="sort"]').selectOption({ label: sortOption });
-}
-
-/**
- * Waits for sorting to be applied by checking for a specific product to appear first
- * @param page - Playwright page object
- * @param firstProductName - Name of the product that should appear first after sorting
- * @param timeout - Optional timeout in milliseconds (default: 10000)
- */
-export async function waitForSortingComplete(page: Page, firstProductName: string, timeout: number = 10000): Promise<void> {
-  const productLocator = page.locator(`h5:has-text("${firstProductName}")`);
-  await productLocator.waitFor({ state: 'visible', timeout });
-  
-  // Verify product is visible using Chai
-  const isVisible = await productLocator.isVisible();
-  expect(isVisible).to.be.true;
-}
-
-/**
- * Verifies that specific products are visible after filtering
- * @param page - Playwright page object
- * @param productNames - Array of product names to verify
- * @param timeout - Optional timeout in milliseconds (default: 10000)
- */
-export async function verifyProductsVisible(page: Page, productNames: string[], timeout: number = 10000): Promise<void> {
-  for (const productName of productNames) {
-    const productLocator = page.locator(`h5:has-text("${productName}")`);
-    await productLocator.waitFor({ state: 'visible', timeout });
-    
-    // Verify product is visible using Chai
-    const isVisible = await productLocator.isVisible();
-    expect(isVisible).to.be.true;
-  }
 }
 
 /**
@@ -118,15 +80,14 @@ export async function verifyProductsVisible(page: Page, productNames: string[], 
  * @param minPrice - Minimum price for range filter
  * @param maxPrice - Maximum price for range filter
  * @param sortOption - Sorting option to apply
- * @param expectedProducts - Array of product names to verify after filtering
  */
+
 export async function applyFiltersAndSort(
   page: Page,
   categoryFilter: string,
   minPrice: number,
   maxPrice: number,
   sortOption: string,
-  expectedProducts: string[]
 ): Promise<void> {
   // Apply category filter
   await page.locator('#filters').getByText(categoryFilter).click();
@@ -139,12 +100,4 @@ export async function applyFiltersAndSort(
   
   // Apply sorting
   await applySorting(page, sortOption);
-  
-  // Wait for sorting to complete (using first expected product)
-  if (expectedProducts.length > 0) {
-    await waitForSortingComplete(page, expectedProducts[0]);
-  }
-  
-  // Verify expected products are visible
-  await verifyProductsVisible(page, expectedProducts);
 }

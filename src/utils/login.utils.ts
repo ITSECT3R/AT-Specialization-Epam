@@ -1,34 +1,41 @@
-import { expect } from '@playwright/test';
-import { getTestUser } from './get-user';
+import { expect, Page } from '@playwright/test';
+import { getTestUser } from '../utils/index.utils';
+import { pages } from '../po/index.page';
+import { urls } from '../data/index.data';
 
-// Simple login function - only attempts login, no registration logic
-async function attemptLogin(page: any, user: any) {
+interface User {
+  email: string;
+  password: string;
+}
+
+async function attemptLogin(page: Page, user: User) {
+  const { loginPage } = pages(page);
+  
   console.log(`🔑 Attempting login for user: ${user.email}`);
-  
-  await page.goto('/auth/login');
-  await page.waitForLoadState('load');
-  
-  await page.fill('[data-test="email"]', user.email);
-  await page.fill('[data-test="password"]', user.password);
-  await page.click('[data-test="login-submit"]');
-  
-  await expect(page).toHaveURL(/.*\/account/, { timeout: 10000 });
+
+  await loginPage.navigateTo(urls.login);
+  await loginPage.waitForLoad();
+
+  await loginPage.login(user.email, user.password);
+
+  await expect(page).toHaveURL(urls.account, { timeout: 10000 });
   console.log(`✅ Login successful for user: ${user.email}`);
 }
 
 // Login function with registration fallback
-export async function loginUser(page: any, user?: any) {
+export async function loginUser(page: Page, user?: any) {
   const testUser = user || getTestUser('login-test-session');
 
   try {
     // First attempt: try to login
     await attemptLogin(page, testUser);
     return testUser;
+
   } catch (error) {
     console.log(`❌ Login failed for user: ${testUser.email}, will try registration`);
     
     // Import register function only when needed to avoid circular dependency
-    const { registerUser } = await import('./register');
+    const { registerUser } = await import('./register.utils');
     
     // Register the user
     const registrationResult = await registerUser(page, testUser);

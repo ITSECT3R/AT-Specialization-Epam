@@ -1,8 +1,10 @@
+import { newUser } from '../data/index.data';
+
 // Store unique users per browser session using a Map
 const browserUsers = new Map<string, Record<string, string>>();
 
 // Dynamic user data generation for browser isolation
-const generateUniqueEmail = (): string => {
+export function generateUniqueEmail(): string {
   const timestamp = Date.now();
   const randomSuffix = Math.random().toString(36).substring(2, 8);
   // Use a combination of timestamp and random for uniqueness
@@ -21,22 +23,7 @@ export const getTestUser = (browserContext?: string): Record<string, string> => 
     console.log(`♻️ Reusing existing user for session ${sessionKey}: ${browserUsers.get(sessionKey)!.email}`);
     return browserUsers.get(sessionKey)!;
   }
-
-  // Generate new user data for this session
-  const newUser = {
-    email: generateUniqueEmail(),
-    password: 'shadowFax123!',
-    firstName: 'Christofer',
-    lastName: 'Hopkins',
-    dob: '1990-01-01',
-    street: '123 Main St',
-    postalCode: '12345',
-    city: 'Anytown',
-    state: 'CA',
-    country: 'Mexico',
-    phone: '1234567890'
-  };
-
+  
   // Store user for this session
   browserUsers.set(sessionKey, newUser);
   console.log(`🧪 Generated test user for session ${sessionKey}: ${newUser.email}`);
