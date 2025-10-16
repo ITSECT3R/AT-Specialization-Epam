@@ -51,7 +51,7 @@ test.describe('Products Shop & Cart Testing', () => {
     const { homePage, productDetailPage, checkoutPage } = pages(page);
 
     await homePage.navigateTo(urls.home);
-    await homePage.clickByText('Thor Hammer $11.14');
+    await homePage.clickByText(/Thor Hammer.*\$11\.14/);
     await homePage.waitForUrl(products.productRegex);
 
     assert.match(await homePage.getCurrentUrl(), products.productRegex, 'Should be on product page');

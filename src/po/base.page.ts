@@ -61,7 +61,7 @@ export class BasePage {
     await this.waitForLoad();
   }
 
-  async clickByText(text: string): Promise<void> {
+  async clickByText(text: string | RegExp): Promise<void> {
     await this.page.click(`text=${text}`);
   }
 
