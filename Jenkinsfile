@@ -42,11 +42,6 @@ pipeline {
                     sh 'npx playwright install chromium firefox'
                 }
             }
-            post {
-                success {
-                    echo '📋 Dependencies installed successfully'
-                }
-            }
         }
         
         stage('Code Quality - Linting & Formatting') {
@@ -54,11 +49,6 @@ pipeline {
                 stage('ESLint Check') {
                     steps {
                         sh 'npm run lint:strict'
-                    }
-                    post {
-                        failure {
-                            echo 'ESLint found issues. Please run "npm run lint:fix" locally to fix auto-fixable issues.'
-                        }
                     }
                 }
                 
@@ -84,16 +74,23 @@ pipeline {
                             archiveArtifacts artifacts: 'test-results/**/*', allowEmptyArchive: true
                         }
                         
-                        // Publish HTML reports
+                        // Publish HTML reports (if plugin is available)
                         if (fileExists('playwright-report')) {
-                            publishHTML([
-                                allowMissing: true,
-                                alwaysLinkToLastBuild: true,
-                                keepAll: true,
-                                reportDir: 'playwright-report',
-                                reportFiles: 'index.html',
-                                reportName: 'Playwright Test Report'
-                            ])
+                            try {
+                                publishHTML([
+                                    allowMissing: true,
+                                    alwaysLinkToLastBuild: true,
+                                    keepAll: true,
+                                    reportDir: 'playwright-report',
+                                    reportFiles: 'index.html',
+                                    reportName: 'Playwright Test Report'
+                                ])
+                                echo '📊 HTML report published successfully'
+                            } catch (Exception e) {
+                                echo "⚠️ HTML Publisher plugin not available: ${e.getMessage()}"
+                                echo '📄 Playwright report available in archived artifacts instead'
+                                archiveArtifacts artifacts: 'playwright-report/**/*', allowEmptyArchive: true
+                            }
                         } else {
                             echo '⚠️ No test report found'
                         }
