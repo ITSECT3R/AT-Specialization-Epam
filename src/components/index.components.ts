@@ -1,8 +1,8 @@
-import { Page } from "@playwright/test";
-import { HeaderComponent } from "./header.component";
-import { ProductCardComponent } from "./product-card.component";
-import { SearchComponent } from "./search.component";
-import { StoreComponent } from "./store.component";
+import { Page } from '@playwright/test';
+import { HeaderComponent } from './header.component';
+import { ProductCardComponent } from './product-card.component';
+import { SearchComponent } from './search.component';
+import { StoreComponent } from './store.component';
 
 /**
  * Component Factory - For direct component testing when page objects aren't needed
@@ -20,14 +20,9 @@ export function components(page: Page): ComponentInstances {
     header: new HeaderComponent(page),
     productCard: new ProductCardComponent(page),
     search: new SearchComponent(page),
-    store: new StoreComponent(page)
+    store: new StoreComponent(page),
   };
 }
 
 // Export individual components for imports and type definitions
-export {
-  HeaderComponent,
-  ProductCardComponent,
-  SearchComponent,
-  StoreComponent
-};
+export { HeaderComponent, ProductCardComponent, SearchComponent, StoreComponent };

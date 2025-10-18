@@ -1,6 +1,6 @@
 import { Page, Locator } from '@playwright/test';
 import { BasePage } from './base.page';
-import { createPersonalDataLocators   } from '../data/index.data';
+import { createPersonalDataLocators } from '../data/index.data';
 
 export class LoginPage extends BasePage {
   private readonly loginButton: Locator;
@@ -24,6 +24,6 @@ export class LoginPage extends BasePage {
   async getNavMenuText(): Promise<string> {
     const navMenu = this.header.navHeaderBtns.menu;
     await navMenu.waitFor({ state: 'visible' });
-    return await navMenu.textContent() || '';
+    return (await navMenu.textContent()) || '';
   }
 }

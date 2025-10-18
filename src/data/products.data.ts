@@ -2,7 +2,7 @@ export const expectedProducts = {
   spannersSet: 'Open-end Spanners (Set)',
   swissWoodcarvingChisels: 'Swiss Woodcarving Chisels',
   adjustableWrench: 'Adjustable Wrench',
-  clawHammer: 'Claw Hammer with Fiberglass Handle'
+  clawHammer: 'Claw Hammer with Fiberglass Handle',
 };
 
 export const products = {
@@ -25,7 +25,7 @@ export const products = {
     name: 'Combination Pliers',
     description: 'Versatile pliers for various tasks.',
     price: '$14.24',
-    related: /Combination Pliers More information/i
+    related: /Combination Pliers More information/i,
   },
-  productRegex: /^https:\/\/practicesoftwaretesting\.com\/product\/.*/
+  productRegex: /^https:\/\/practicesoftwaretesting\.com\/product\/.*/,
 };
