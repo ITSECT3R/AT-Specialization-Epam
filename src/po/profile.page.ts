@@ -17,12 +17,12 @@ export class ProfilePage extends BasePage {
     await this.inputs.lastName.fill(lastName);
     await this.inputs.phone.fill(phone);
   }
-  
-  async getPersonalInfoValues(): Promise<{ firstName: string; lastName: string; phone: string; }> {
+
+  async getPersonalInfoValues(): Promise<{ firstName: string; lastName: string; phone: string }> {
     return {
       firstName: await this.inputs.firstName.inputValue(),
       lastName: await this.inputs.lastName.inputValue(),
-      phone: await this.inputs.phone.inputValue()
+      phone: await this.inputs.phone.inputValue(),
     };
   }
 

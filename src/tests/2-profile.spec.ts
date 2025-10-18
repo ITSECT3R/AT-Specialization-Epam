@@ -13,14 +13,18 @@ test.describe('Profile', () => {
 
     // Given I am logged in to my account
     await loginUser(page);
-    
+
     // When I navigate to my profile page using ProfilePage
-    await profilePage.header.navMenuTo('profile')
-    
+    await profilePage.header.navMenuTo('profile');
+
     // Verify we're on profile page using ProfilePage method
     assert.equal(await profilePage.getCurrentUrl(), urls.profile, 'URL should match profile page');
 
-    await profilePage.updatePersonalInfo(updateUserInfo.name, updateUserInfo.lastName, updateUserInfo.phone);
+    await profilePage.updatePersonalInfo(
+      updateUserInfo.name,
+      updateUserInfo.lastName,
+      updateUserInfo.phone
+    );
 
     // And I save the changes
     await profilePage.clickSave(); // this click does not work :(
@@ -30,6 +34,10 @@ test.describe('Profile', () => {
 
     expect(personalInfo.firstName).to.equal(updateUserInfo.name);
     (personalInfo.lastName as any).should.equal(updateUserInfo.lastName);
-    assert.equal(personalInfo.phone, updateUserInfo.phone, 'Phone value should match updated phone');
+    assert.equal(
+      personalInfo.phone,
+      updateUserInfo.phone,
+      'Phone value should match updated phone'
+    );
   });
 });
