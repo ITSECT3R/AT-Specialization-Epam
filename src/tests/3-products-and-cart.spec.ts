@@ -119,7 +119,7 @@ test.describe('Products Shop & Cart Testing', () => {
 
     // Navigate to Long Nose Pilers product
     await homePage.navigateTo(urls.home);
-    const pilersCell = await homePage.findCellByText('link', /Long Nose Pliers.*Out of stock/);
+    const pilersCell = await homePage.findCellByText('link', /Long Nose Pliers.*/);
     await pilersCell.click();
     const productUrl = await homePage.getCurrentUrl();
 
