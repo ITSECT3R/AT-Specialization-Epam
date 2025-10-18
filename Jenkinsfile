@@ -69,28 +69,14 @@ pipeline {
             post {
                 always {
                     script {
-                        // Archive test results
+                        // Archive test results and reports
                         if (fileExists('test-results')) {
                             archiveArtifacts artifacts: 'test-results/**/*', allowEmptyArchive: true
                         }
                         
-                        // Publish HTML reports (if plugin is available)
                         if (fileExists('playwright-report')) {
-                            try {
-                                publishHTML([
-                                    allowMissing: true,
-                                    alwaysLinkToLastBuild: true,
-                                    keepAll: true,
-                                    reportDir: 'playwright-report',
-                                    reportFiles: 'index.html',
-                                    reportName: 'Playwright Test Report'
-                                ])
-                                echo '📊 HTML report published successfully'
-                            } catch (Exception e) {
-                                echo "⚠️ HTML Publisher plugin not available: ${e.getMessage()}"
-                                echo '📄 Playwright report available in archived artifacts instead'
-                                archiveArtifacts artifacts: 'playwright-report/**/*', allowEmptyArchive: true
-                            }
+                            archiveArtifacts artifacts: 'playwright-report/**/*', allowEmptyArchive: true
+                            echo '� Playwright HTML report archived in build artifacts'
                         } else {
                             echo '⚠️ No test report found'
                         }
