@@ -5,6 +5,9 @@ pipeline {
         NODE_ENV = 'test'
         PATH = "$PATH:/usr/local/bin"
         CI = 'true'
+        // Playwright configuration for CI
+        PLAYWRIGHT_BROWSERS_PATH = "${WORKSPACE}/pw-browsers"
+        PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS = 'true'
     }
     
     stages {
@@ -35,7 +38,14 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh 'npm ci'
-                sh 'npx playwright install --with-deps'
+                script {
+                    sh 'npx playwright install chromium firefox webkit'
+                }
+            }
+            post {
+                success {
+                    echo '📋 Dependencies installed successfully'
+                }
             }
         }
         
@@ -62,21 +72,32 @@ pipeline {
         
         stage('UI Tests with Playwright') {
             steps {
-                sh 'npm run test:playwright'
+                script {
+                    sh 'npm run test:playwright'
+                }
             }
             post {
                 always {
-                    // Archive test results
-                    archiveArtifacts artifacts: 'test-results/**/*', allowEmptyArchive: true
-                    // Publish HTML reports if available
-                    publishHTML([
-                        allowMissing: false,
-                        alwaysLinkToLastBuild: true,
-                        keepAll: true,
-                        reportDir: 'playwright-report',
-                        reportFiles: 'index.html',
-                        reportName: 'Playwright Test Report'
-                    ])
+                    script {
+                        // Archive test results
+                        if (fileExists('test-results')) {
+                            archiveArtifacts artifacts: 'test-results/**/*', allowEmptyArchive: true
+                        }
+                        
+                        // Publish HTML reports
+                        if (fileExists('playwright-report')) {
+                            publishHTML([
+                                allowMissing: true,
+                                alwaysLinkToLastBuild: true,
+                                keepAll: true,
+                                reportDir: 'playwright-report',
+                                reportFiles: 'index.html',
+                                reportName: 'Playwright Test Report'
+                            ])
+                        } else {
+                            echo '⚠️ No test report found'
+                        }
+                    }
                 }
             }
         }
@@ -84,6 +105,10 @@ pipeline {
     
     post {
         always {
+            script {
+                def duration = currentBuild.durationString
+                echo "🕐 Pipeline completed in ${duration}"
+            }
             cleanWs()
         }
     }
