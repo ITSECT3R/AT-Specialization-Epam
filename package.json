@@ -2,6 +2,7 @@
   "name": "at-specializtion-epam",
   "version": "1.0.0",
   "description": "EPAM AT Specialization - Test Automation Framework Playwright + Chai",
+  "type": "module",
   "main": "index.js",
   "keywords": [
     "test-automation",

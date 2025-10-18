@@ -2,11 +2,7 @@ import { expect, Page } from '@playwright/test';
 import { getTestUser } from '../utils/index.utils';
 import { pages } from '../po/index.page';
 import { urls } from '../data/index.data';
-
-interface User {
-  email: string;
-  password: string;
-}
+import { User } from './register.utils';
 
 async function attemptLogin(page: Page, user: User) {
   const { loginPage } = pages(page);
@@ -23,8 +19,8 @@ async function attemptLogin(page: Page, user: User) {
 }
 
 // Login function with registration fallback
-export async function loginUser(page: Page, user?: any) {
-  const testUser = user || getTestUser('login-test-session');
+export async function loginUser(page: Page, user?: User) {
+  const testUser = user || (getTestUser('login-test-session') as unknown as User);
 
   try {
     // First attempt: try to login

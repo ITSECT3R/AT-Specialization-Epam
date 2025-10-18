@@ -2,9 +2,23 @@ import { Page, expect } from '@playwright/test';
 import { urls } from '../data/index.data';
 import { pages } from '../po/index.page';
 
+export interface User {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  dob: string;
+  street: string;
+  postalCode: string;
+  city: string;
+  state: string;
+  country: string;
+  phone: string;
+}
+
 export interface RegistrationResult {
   success: boolean;
-  user: any;
+  user: User;
   error?: string;
 }
 
@@ -15,7 +29,7 @@ export interface RegistrationResult {
  * @returns Promise<RegistrationResult> - Registration result with success status
  */
 
-export async function registerUser(page: Page, user: any): Promise<RegistrationResult> {
+export async function registerUser(page: Page, user: User): Promise<RegistrationResult> {
   const { registerPage } = pages(page);
 
   try {

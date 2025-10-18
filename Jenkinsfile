@@ -39,7 +39,7 @@ pipeline {
             steps {
                 sh 'npm ci'
                 script {
-                    sh 'npx playwright install chromium firefox webkit'
+                    sh 'npx playwright install chromium firefox'
                 }
             }
             post {
