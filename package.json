@@ -2,6 +2,7 @@
   "name": "at-specializtion-epam",
   "version": "1.0.0",
   "description": "EPAM AT Specialization - Test Automation Framework Playwright + Chai",
+  "type": "module",
   "main": "index.js",
   "keywords": [
     "test-automation",
@@ -15,23 +16,26 @@
   "license": "ISC",
   "scripts": {
     "test:all": "npm run test:playwright",
-
     "test:playwright": "npx playwright test --config=src/configs/playwright.config.ts",
     "test:playwright:headed": "npx playwright test --config=src/configs/playwright.config.ts --headed",
     "test:playwright:debug": "npx playwright test --config=src/configs/playwright.config.ts --debug",
     "test:playwright:ui": "npx playwright test --config=src/configs/playwright.config.ts --ui",
-
     "test:login": "npx playwright test --config=src/configs/playwright.config.ts src/tests/1-login.spec.ts",
     "test:profile": "npx playwright test --config=src/configs/playwright.config.ts src/tests/2-profile.spec.ts",
     "test:products": "npx playwright test --config=src/configs/playwright.config.ts src/tests/3-products-and-cart.spec.ts",
     "test:search": "npx playwright test --config=src/configs/playwright.config.ts src/tests/4-search-and-filter.spec.ts",
     "test:checkout": "npx playwright test --config=src/configs/playwright.config.ts src/tests/5-checkout.spec.ts",
-    
     "show-report": "npx playwright show-report",
     "install-browsers": "npx playwright install",
     "clean": "rm -rf test-results playwright-report coverage",
-    "lint": "echo 'Linting not configured yet'",
-    "format": "echo 'Formatting not configured yet'"
+    "lint": "eslint \"src/**/*.{ts,js}\" --max-warnings 5",
+    "lint:strict": "eslint \"src/**/*.{ts,js}\" --max-warnings 0",
+    "lint:fix": "eslint \"src/**/*.{ts,js}\" --fix",
+    "format": "prettier --write \"src/**/*.{ts,js,json,md}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,js,json,md}\"",
+    "format:ci": "prettier --list-different \"src/**/*.{ts,js,json,md}\"",
+    "quality:check": "npm run lint && npm run format:check",
+    "quality:fix": "npm run lint:fix && npm run format"
   },
   "repository": {
     "type": "git",
@@ -42,10 +46,19 @@
   },
   "homepage": "https://github.com/ITSECT3R/AT-Specializtion-Epam#readme",
   "devDependencies": {
+    "@eslint/js": "^9.38.0",
     "@playwright/test": "1.54.2",
     "@types/chai": "5.2.2",
     "@types/node": "24.3.0",
+    "@types/prettier": "^2.7.3",
+    "@typescript-eslint/eslint-plugin": "^8.46.1",
+    "@typescript-eslint/parser": "^8.46.1",
     "chai": "6.0.1",
+    "eslint": "^9.38.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-playwright": "^2.2.2",
+    "eslint-plugin-prettier": "^5.5.4",
+    "prettier": "^3.6.2",
     "ts-node": "10.9.2",
     "tsconfig-paths": "4.2.0"
   }

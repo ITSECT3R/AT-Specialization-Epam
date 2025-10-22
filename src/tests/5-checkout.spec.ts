@@ -35,7 +35,7 @@ test.describe('Checkout', () => {
     const cartQuantityText = await productDetailPage.header.getCartQuantity();
     // Using 'expect' style (keep one for variety)
     expect(cartQuantityText).to.include('1');
-    
+
     // When I proceed to checkout
     await productDetailPage.header.clickHeaderButton('cart');
     await checkoutPage.waitForUrl(/.*\/checkout/);
@@ -48,10 +48,10 @@ test.describe('Checkout', () => {
     const isPliersVisible = await pliersCell.isVisible();
 
     (isPliersVisible as any).should.be.true;
-    
+
     // Proceed to checkout step 1 (Sign in - already done)
     await checkoutPage.proceedBtns.btn1.click();
-    
+
     // Proceed to checkout step 2 (Address)
     await checkoutPage.proceedBtns.btn2.click();
     await checkoutPage.waitForUrl(/.*\/checkout/);
@@ -64,7 +64,7 @@ test.describe('Checkout', () => {
       city: 'Test City',
       state: 'Test State',
       country: 'United States',
-      postalCode: '12345'
+      postalCode: '12345',
     });
 
     // Proceed to checkout step 3 (Payment)

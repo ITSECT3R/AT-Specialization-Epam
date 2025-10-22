@@ -6,7 +6,6 @@ import { BaseComponent } from './base.component';
  * Handles product listing and product detail page functionality
  */
 export class ProductCardComponent extends BaseComponent {
-  
   // Public locators - direct access for tests
   public readonly productName: Locator;
   public readonly productDescription: Locator;
@@ -34,11 +33,11 @@ export class ProductCardComponent extends BaseComponent {
   // High-level methods using the locators
   async getProductName(): Promise<string> {
     await this.productName.waitFor({ state: 'visible', timeout: 15000 });
-    return await this.productName.textContent() || '';
+    return (await this.productName.textContent()) || '';
   }
 
   async getProductDescription(): Promise<string> {
-    return await this.productDescription.textContent() || '';
+    return (await this.productDescription.textContent()) || '';
   }
 
   async addToCart(): Promise<void> {
@@ -66,6 +65,6 @@ export class ProductCardComponent extends BaseComponent {
 
   async getPriceText(): Promise<string> {
     const priceElement = this.page.getByText('$');
-    return await priceElement.textContent() || '';
+    return (await priceElement.textContent()) || '';
   }
 }

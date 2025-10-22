@@ -15,7 +15,7 @@ async function selectAllCategoryCheckboxes(page: Page, categoryText: string): Pr
   const categoryList = page.getByRole('list').filter({ hasText: categoryText });
   const checkboxes = categoryList.locator('input[type="checkbox"]');
   const count = await checkboxes.count();
-  
+
   for (let i = 0; i < count; i++) {
     const checkbox = checkboxes.nth(i);
     if (!(await checkbox.isChecked())) {
@@ -37,11 +37,11 @@ async function setPriceRangeSlider(page: Page, minPrice: number, maxPrice: numbe
   // Get the slider elements
   const minSlider = page.locator('.ngx-slider-pointer-min');
   const maxSlider = page.locator('.ngx-slider-pointer-max');
-  
+
   // Wait for sliders to be visible
   await minSlider.waitFor({ state: 'visible' });
   await maxSlider.waitFor({ state: 'visible' });
-  
+
   // Set minimum price (assuming slider starts at 0)
   if (minPrice > 0) {
     await minSlider.click();
@@ -51,7 +51,7 @@ async function setPriceRangeSlider(page: Page, minPrice: number, maxPrice: numbe
       await page.keyboard.press('ArrowRight');
     }
   }
-  
+
   // Set maximum price (assuming slider starts at 100)
   if (maxPrice < 100) {
     await maxSlider.click();
@@ -87,17 +87,17 @@ export async function applyFiltersAndSort(
   categoryFilter: string,
   minPrice: number,
   maxPrice: number,
-  sortOption: string,
+  sortOption: string
 ): Promise<void> {
   // Apply category filter
   await page.locator('#filters').getByText(categoryFilter).click();
-  
+
   // Select all checkboxes in the category
   await selectAllCategoryCheckboxes(page, 'Categories Hammer Hand Saw');
-  
+
   // Set price range
   await setPriceRangeSlider(page, minPrice, maxPrice);
-  
+
   // Apply sorting
   await applySorting(page, sortOption);
 }

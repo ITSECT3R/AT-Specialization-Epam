@@ -38,16 +38,16 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
-    
+
     /* Take screenshots on failure */
     screenshot: 'only-on-failure',
-    
+
     /* Record video on failure */
     video: 'retain-on-failure',
-    
+
     /* Global timeout for actions like click, fill, etc. */
     actionTimeout: 10000,
-    
+
     /* Global timeout for navigation actions like goto, reload, etc. */
     navigationTimeout: 30000,
   },
@@ -56,15 +56,15 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { 
-        ...devices['Desktop Chrome']
+      use: {
+        ...devices['Desktop Chrome'],
       },
     },
 
     {
       name: 'firefox',
-      use: { 
-        ...devices['Desktop Firefox']
+      use: {
+        ...devices['Desktop Firefox'],
       },
     },
 

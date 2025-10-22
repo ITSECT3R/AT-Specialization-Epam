@@ -6,7 +6,6 @@ import { BaseComponent } from './base.component';
  * Exposes locators directly for modern Playwright usage patterns
  */
 export class SearchComponent extends BaseComponent {
-
   // Public locators - can be used directly in tests
   public readonly searchInput: Locator;
   public readonly searchButton: Locator;
@@ -18,7 +17,7 @@ export class SearchComponent extends BaseComponent {
 
   constructor(page: Page) {
     super(page);
-    
+
     // Initialize locators after page is set
     this.searchInput = this.page.locator('[data-test="search-query"]');
     this.searchButton = this.page.locator('[data-test="search-submit"]');

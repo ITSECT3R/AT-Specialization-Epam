@@ -1,9 +1,14 @@
 import { Page, Locator } from '@playwright/test';
-import { HeaderComponent, ProductCardComponent, SearchComponent, StoreComponent } from '../components/index.components';
+import {
+  HeaderComponent,
+  ProductCardComponent,
+  SearchComponent,
+  StoreComponent,
+} from '../components/index.components';
 
 export class BasePage {
   protected page: Page;
-  
+
   // Private component instances for lazy initialization
   private _header?: HeaderComponent;
   private _productCard?: ProductCardComponent;
@@ -73,4 +78,3 @@ export class BasePage {
     await this.page.waitForURL(urlOrRegex);
   }
 }
-

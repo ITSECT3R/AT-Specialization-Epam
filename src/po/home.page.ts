@@ -6,4 +6,3 @@ export class HomePage extends BasePage {
     super(page);
   }
 }
-

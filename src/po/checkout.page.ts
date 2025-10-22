@@ -1,5 +1,5 @@
-import { Locator, Page } from "playwright";
-import { BasePage } from "./base.page";
+import { Locator, Page } from 'playwright';
+import { BasePage } from './base.page';
 import { createPersonalDataLocators } from '../data/index.data';
 
 // Type definitions for checkout page
@@ -33,7 +33,7 @@ export class CheckoutPage extends BasePage {
   public readonly paymentInputs: PaymentInputSelectors;
   public readonly shippingInputs: ReturnType<typeof createPersonalDataLocators>;
   public readonly proceedBtns: Record<ProceedButton, Locator>;
-  
+
   public readonly paymentData: PaymentData = {
     method: 'bank-transfer',
     bankName: 'Bank of America',
@@ -81,13 +81,19 @@ export class CheckoutPage extends BasePage {
   }
 
   async getPaymentSuccessMessage(): Promise<string> {
-    const paymentSuccessMessage = this.page.locator('div').filter({ hasText: /^Payment was successful$/ }).first();
+    const paymentSuccessMessage = this.page
+      .locator('div')
+      .filter({ hasText: /^Payment was successful$/ })
+      .first();
     await paymentSuccessMessage.waitFor({ state: 'visible' });
-    return await paymentSuccessMessage.textContent() || '';
+    return (await paymentSuccessMessage.textContent()) || '';
   }
 
   async isPaymentSuccessVisible(): Promise<boolean> {
-    const paymentSuccessMessage = this.page.locator('div').filter({ hasText: /^Payment was successful$/ }).first();
+    const paymentSuccessMessage = this.page
+      .locator('div')
+      .filter({ hasText: /^Payment was successful$/ })
+      .first();
     await paymentSuccessMessage.waitFor({ state: 'visible' });
     return await paymentSuccessMessage.isVisible();
   }

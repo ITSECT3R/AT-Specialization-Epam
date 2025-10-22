@@ -3,12 +3,11 @@ import { expect } from 'chai';
 import * as chai from 'chai';
 chai.should();
 import { assert } from 'chai';
-import { urls, expectedProducts  } from '../data/index.data';
+import { urls, expectedProducts } from '../data/index.data';
 import { loginUser, applyFiltersAndSort } from '../utils/index.utils';
 import { pages } from '../po/index.page';
 
 test.describe('Search & Filter', () => {
-  
   test('Search for a specific product by name', async ({ page }) => {
     const { homePage } = pages(page);
 
@@ -18,10 +17,10 @@ test.describe('Search & Filter', () => {
     const pageTitle = await page.title();
 
     assert.match(pageTitle, /Practice Software Testing/, 'Page title should match');
-    
+
     // When I enter "hammer" in the search box
     await homePage.search.searchInput.fill('hammer');
-    
+
     // And I click the search button or press Enter
     await homePage.search.searchButton.click();
 
@@ -31,12 +30,12 @@ test.describe('Search & Filter', () => {
     const isCaptionVisible = await searchCaption.isVisible();
     (isCaptionVisible as any).should.be.true;
 
-    const searchedForHeader = homePage.search.hammerHeader
+    const searchedForHeader = homePage.search.hammerHeader;
     await searchedForHeader.waitFor({ state: 'visible' });
     const isHeaderVisible = await searchedForHeader.isVisible();
 
     expect(isHeaderVisible).to.be.true;
-    
+
     // Then I should see products related to "hammer" displayed in the results
     const searchTermText = await homePage.search.searchTerm.textContent();
     assert.equal(searchTermText, 'hammer', 'Search term should be hammer');
@@ -65,16 +64,17 @@ test.describe('Search & Filter', () => {
     // When I apply filters and sorting using reusable utility functions
     await applyFiltersAndSort(
       page,
-      'Hand Tools',           // Category filter
-      19,                     // Min price
-      45,                     // Max price  
-      'Price (High - Low)',   // Sort option
+      'Hand Tools', // Category filter
+      19, // Min price
+      45, // Max price
+      'Price (High - Low)' // Sort option
     );
-    
+
     // Then I should see the filtered and sorted products displayed correctly
     expect(await homePage.store.isVisibleProduct(expectedProducts.spannersSet)).to.be.true;
     assert.isTrue(await homePage.store.isVisibleProduct(expectedProducts.swissWoodcarvingChisels));
-    (await homePage.store.isVisibleProduct(expectedProducts.adjustableWrench) as any).should.be.true;
+    ((await homePage.store.isVisibleProduct(expectedProducts.adjustableWrench)) as any).should.be
+      .true;
     expect(await homePage.store.isVisibleProduct(expectedProducts.clawHammer)).to.be.true;
   });
 });

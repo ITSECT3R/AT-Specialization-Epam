@@ -2,8 +2,21 @@ import { Page, Locator } from '@playwright/test';
 import { BaseComponent } from './base.component';
 
 // Type definitions for header navigation
-export type NavHeaderButton = 'home' | 'categories' | 'contact' | 'menu' | 'language' | 'cart' | 'cartQuantity';
-export type NavMenuButton = 'account' | 'favorites' | 'profile' | 'invoices' | 'messages' | 'signOut';
+export type NavHeaderButton =
+  | 'home'
+  | 'categories'
+  | 'contact'
+  | 'menu'
+  | 'language'
+  | 'cart'
+  | 'cartQuantity';
+export type NavMenuButton =
+  | 'account'
+  | 'favorites'
+  | 'profile'
+  | 'invoices'
+  | 'messages'
+  | 'signOut';
 
 /**
  * HeaderComponent - Reusable component for site navigation
@@ -16,7 +29,7 @@ export class HeaderComponent extends BaseComponent {
 
   constructor(page: Page) {
     super(page);
-    
+
     // Initialize locators after page is set
     this.navHeaderBtns = {
       home: this.page.locator('[data-test="nav-home"]'),
@@ -25,7 +38,7 @@ export class HeaderComponent extends BaseComponent {
       menu: this.page.locator('[data-test="nav-menu"]'),
       language: this.page.locator('[data-test="language-select"]'),
       cart: this.page.locator('[data-test="nav-cart"]'),
-      cartQuantity: this.page.locator('[data-test="cart-quantity"]')
+      cartQuantity: this.page.locator('[data-test="cart-quantity"]'),
     };
 
     this.navMenuBtns = {
@@ -34,7 +47,7 @@ export class HeaderComponent extends BaseComponent {
       profile: this.page.locator('[data-test="nav-my-profile"]'),
       invoices: this.page.locator('[data-test="nav-my-invoices"]'),
       messages: this.page.locator('[data-test="nav-my-messages"]'),
-      signOut: this.page.locator('[data-test="nav-sign-out"]')
+      signOut: this.page.locator('[data-test="nav-sign-out"]'),
     };
   }
 
@@ -49,6 +62,6 @@ export class HeaderComponent extends BaseComponent {
   }
 
   async getCartQuantity(): Promise<string> {
-    return await this.navHeaderBtns.cartQuantity.textContent() || '';
+    return (await this.navHeaderBtns.cartQuantity.textContent()) || '';
   }
 }

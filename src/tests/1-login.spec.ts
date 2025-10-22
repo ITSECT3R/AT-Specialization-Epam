@@ -9,7 +9,7 @@ import { getTestUser, loginUser, registerUser } from '../utils/index.utils';
 test.describe('Test Login', () => {
   test('User registration and login process', async ({ page }) => {
     const { loginPage } = pages(page);
-    
+
     // Step 1: Get a test user
     const testUser = getTestUser('login-test-session');
 
@@ -21,11 +21,11 @@ test.describe('Test Login', () => {
 
     // Step 4: Verify we're logged in successfully using LoginPage
     await loginPage.waitForLoad();
-    
+
     const navMenuText = await loginPage.getNavMenuText();
     const accountUrl = await loginPage.getCurrentUrl();
-    
+
     expect(accountUrl).to.equal(urls.account);
     (navMenuText as any).should.include(`${loggedInUser.firstName} ${loggedInUser.lastName}`);
-    });
+  });
 });
