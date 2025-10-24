@@ -1,8 +1,8 @@
 import { Page } from '@playwright/test';
-import { HeaderComponent } from './header.component';
-import { ProductCardComponent } from './product-card.component';
-import { SearchComponent } from './search.component';
-import { StoreComponent } from './store.component';
+import { HeaderComponent } from './header.component.js';
+import { ProductCardComponent } from './product-card.component.js';
+import { SearchComponent } from './search.component.js';
+import { StoreComponent } from './store.component.js';
 
 /**
  * Component Factory - For direct component testing when page objects aren't needed

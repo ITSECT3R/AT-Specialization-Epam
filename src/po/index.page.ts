@@ -1,10 +1,10 @@
 import { Page } from '@playwright/test';
-import { CheckoutPage } from './checkout.page.ts';
-import { HomePage } from './home.page.ts';
-import { LoginPage } from './login.page.ts';
-import { ProductDetailPage } from './product-detail.page.ts';
-import { ProfilePage } from './profile.page.ts';
-import { RegisterPage } from './register.page.ts';
+import { CheckoutPage } from './checkout.page.js';
+import { HomePage } from './home.page.js';
+import { LoginPage } from './login.page.js';
+import { ProductDetailPage } from './product-detail.page.js';
+import { ProfilePage } from './profile.page.js';
+import { RegisterPage } from './register.page.js';
 
 /**
  * Page Object Factory - Creates instances of all page objects

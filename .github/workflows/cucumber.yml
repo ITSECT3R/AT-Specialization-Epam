@@ -1,0 +1,141 @@
+name: Cucumber BDD Tests
+on:
+  push:
+    branches: [main, master, BDD-Cucumber]
+  pull_request:
+    branches: [main, master, BDD-Cucumber]
+  workflow_dispatch:
+    inputs:
+      test_suite:
+        description: 'Test suite to run'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - smoke
+          - regression
+          - critical
+          - login
+          - profile
+          - products
+          - cart
+          - search
+          - checkout
+          - e-commerce
+
+jobs:
+  cucumber-tests:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        suite:
+          - name: 'Smoke Tests'
+            command: 'npm run cucumber:smoke'
+          - name: 'Critical Tests'
+            command: 'npm run cucumber:critical'
+          - name: 'Login Tests'
+            command: 'npm run cucumber:login'
+          - name: 'Checkout Tests'
+            command: 'npm run cucumber:checkout'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      - name: Run ${{ matrix.suite.name }}
+        run: ${{ matrix.suite.command }}
+        continue-on-error: false
+
+      - name: Upload Cucumber Reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cucumber-reports-${{ matrix.suite.name }}
+          path: |
+            cucumber-reports/
+            screenshots/
+          retention-days: 7
+
+  full-regression:
+    timeout-minutes: 90
+    runs-on: ubuntu-latest
+    needs: cucumber-tests
+    if: github.event.inputs.test_suite == 'all' || github.event_name != 'workflow_dispatch'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      - name: Run All Cucumber Tests
+        run: npm run cucumber
+
+      - name: Upload Full Test Reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: full-cucumber-reports
+          path: |
+            cucumber-reports/
+            screenshots/
+          retention-days: 14
+
+  manual-suite:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.test_suite != 'all'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      - name: Run Selected Test Suite
+        run: npm run cucumber:${{ github.event.inputs.test_suite }}
+
+      - name: Upload Selected Suite Reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cucumber-reports-${{ github.event.inputs.test_suite }}
+          path: |
+            cucumber-reports/
+            screenshots/
+          retention-days: 7

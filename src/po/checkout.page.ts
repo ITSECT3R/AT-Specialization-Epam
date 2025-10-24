@@ -1,6 +1,6 @@
 import { Locator, Page } from 'playwright';
-import { BasePage } from './base.page';
-import { createPersonalDataLocators } from '../data/index.data';
+import { BasePage } from './base.page.js';
+import { createPersonalDataLocators } from '../data/index.data.js';
 
 // Type definitions for checkout page
 export type PaymentMethod = 'bank-transfer' | 'credit-card' | 'cash-on-delivery';

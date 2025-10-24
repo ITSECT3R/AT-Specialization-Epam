@@ -1,0 +1,9 @@
+{
+    "default": {
+        "formatOptions": {
+            "snippetInterface": "synchronous"
+        },
+        "loader": ["ts-node/esm"],
+        "require": ["features/**/*.js"]
+    }
+}

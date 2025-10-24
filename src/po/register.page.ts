@@ -1,5 +1,5 @@
-import { createPersonalDataLocators } from '../data/index.data.ts';
-import { BasePage } from './base.page.ts';
+import { createPersonalDataLocators } from '../data/index.data.js';
+import { BasePage } from './base.page.js';
 import { Page, Locator } from '@playwright/test';
 
 export class RegisterPage extends BasePage {

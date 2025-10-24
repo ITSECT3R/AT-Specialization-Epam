@@ -4,7 +4,7 @@ import {
   ProductCardComponent,
   SearchComponent,
   StoreComponent,
-} from '../components/index.components';
+} from '../components/index.components.js';
 
 export class BasePage {
   protected page: Page;

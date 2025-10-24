@@ -1,5 +1,5 @@
 import { Page, Locator } from '@playwright/test';
-import { BaseComponent } from './base.component';
+import { BaseComponent } from './base.component.js';
 
 /**
  * ProductCardComponent - Reusable component for product interactions

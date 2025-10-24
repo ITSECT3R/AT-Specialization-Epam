@@ -1,4 +1,4 @@
-import { generateUniqueEmail } from '../utils/get-user.utils.ts';
+import { generateUniqueEmail } from '../utils/get-user.utils.js';
 
 export const newUser = {
   email: generateUniqueEmail(),
