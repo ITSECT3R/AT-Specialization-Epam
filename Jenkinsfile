@@ -60,25 +60,59 @@ pipeline {
             }
         }
         
-        stage('UI Tests with Playwright') {
-            steps {
-                script {
-                    sh 'npm run test:playwright'
-                }
-            }
-            post {
-                always {
-                    script {
-                        // Archive test results and reports
-                        if (fileExists('test-results')) {
-                            archiveArtifacts artifacts: 'test-results/**/*', allowEmptyArchive: true
+        stage('UI Tests') {
+            parallel {
+                stage('Playwright Tests') {
+                    steps {
+                        script {
+                            sh 'npm run test:playwright'
                         }
-                        
-                        if (fileExists('playwright-report')) {
-                            archiveArtifacts artifacts: 'playwright-report/**/*', allowEmptyArchive: true
-                            echo '� Playwright HTML report archived in build artifacts'
-                        } else {
-                            echo '⚠️ No test report found'
+                    }
+                    post {
+                        always {
+                            script {
+                                // Archive Playwright test results and reports
+                                if (fileExists('test-results')) {
+                                    archiveArtifacts artifacts: 'test-results/**/*', allowEmptyArchive: true
+                                }
+                                
+                                if (fileExists('playwright-report')) {
+                                    archiveArtifacts artifacts: 'playwright-report/**/*', allowEmptyArchive: true
+                                    echo 'Playwright HTML report archived in build artifacts'
+                                } else {
+                                    echo 'No Playwright test report found'
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                stage('Cucumber BDD Tests') {
+                    steps {
+                        script {
+                            echo 'Running Cucumber BDD Test Suite'
+                            
+                            // Run cucumber tests
+                            sh 'npm run cucumber'
+                            echo 'All cucumber tests completed'
+                        }
+                    }
+                    post {
+                        always {
+                            script {
+                                // Archive Cucumber test results and reports
+                                if (fileExists('cucumber-reports')) {
+                                    archiveArtifacts artifacts: 'cucumber-reports/**/*', allowEmptyArchive: true
+                                    echo 'Cucumber reports archived in build artifacts'
+                                }
+                                
+                                if (fileExists('screenshots')) {
+                                    archiveArtifacts artifacts: 'screenshots/**/*', allowEmptyArchive: true
+                                    echo 'Cucumber screenshots archived'
+                                }
+                                
+                                echo 'Cucumber BDD tests execution completed'
+                            }
                         }
                     }
                 }

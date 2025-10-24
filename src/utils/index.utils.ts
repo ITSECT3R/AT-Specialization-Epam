@@ -1,6 +1,6 @@
-import { getTestUser } from './get-user.utils.ts';
-import { loginUser } from './login.utils.ts';
-import { registerUser } from './register.utils.ts';
-import { applyFiltersAndSort } from './filter.utils.ts';
+import { getTestUser } from './get-user.utils.js';
+import { loginUser } from './login.utils.js';
+import { registerUser } from './register.utils.js';
+import { applyFiltersAndSort } from './filter.utils.js';
 
 export { applyFiltersAndSort, getTestUser, loginUser, registerUser };

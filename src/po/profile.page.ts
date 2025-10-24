@@ -1,6 +1,6 @@
 import { Page, Locator } from '@playwright/test';
-import { BasePage } from './base.page';
-import { createPersonalDataLocators } from '../data/index.data';
+import { BasePage } from './base.page.js';
+import { createPersonalDataLocators } from '../data/index.data.js';
 
 export class ProfilePage extends BasePage {
   public readonly inputs: ReturnType<typeof createPersonalDataLocators>;

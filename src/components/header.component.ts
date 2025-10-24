@@ -1,5 +1,5 @@
 import { Page, Locator } from '@playwright/test';
-import { BaseComponent } from './base.component';
+import { BaseComponent } from './base.component.js';
 
 // Type definitions for header navigation
 export type NavHeaderButton =

@@ -1,6 +1,6 @@
 import { Page, expect } from '@playwright/test';
-import { urls } from '../data/index.data';
-import { pages } from '../po/index.page';
+import { urls } from '../data/index.data.js';
+import { pages } from '../po/index.page.js';
 
 export interface User {
   email: string;
